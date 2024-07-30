@@ -13,7 +13,7 @@ import java.util.List;
  * UserDAO - A Data Access Object (DAO) class for managing UserDTO entities.
  * Provides methods for performing CRUD operations on user data in the database.
  * 
- * @author Joshua Barrett
+ * @author Josh Barrett
  */
 public class UserDAO {
     
