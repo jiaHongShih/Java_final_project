@@ -86,7 +86,7 @@ body {
 }
 
 .Sidebar{
-    background-image: url(/Photos/sidebar.jpg);
+    background-image: url(./Photos/sidebar.jpg);
     padding: 20px;
 }
 
