@@ -1,0 +1,174 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#Logotxt{
+    height: 30%;
+    margin-left: 15%;
+}
+
+.Page{
+    display: grid;
+    grid-template-columns: 65% 35%;
+    height: 100vh; 
+}
+
+#subTText{
+    font-family: "Playwrite BE VLG", cursive;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+.Emailtxt, .PassTxt {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #28a745; 
+    border-radius: 5px;
+    outline: none; 
+    transition: border-color 0.3s, box-shadow 0.3s; 
+}
+
+.Emailtxt:focus, .PassTxt:focus {
+    border-color: #218838; 
+    box-shadow: 0 0 5px rgba(33, 136, 56, 0.5); 
+}
+
+.Login{
+    display: flexbox;
+    background-color: whitesmoke;
+    padding: 20px;
+    justify-content: center;
+}
+
+#LoginFRM{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-button {
+    background-color: #28a745; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s, transform 0.3s; 
+}
+
+.login-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px); 
+}
+
+.login-button:active {
+    background-color: #1e7e34; 
+    transform: translateY(0); 
+}
+
+.login-button:focus {
+    outline: none; 
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+}
+
+.Sidebar{
+    background-image: url(/Photos/sidebar.jpg);
+    padding: 20px;
+}
+
+#SidebarFRM{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 37%;
+}
+
+.signup-button {
+    background-color: white; 
+    color: #28a745; 
+    border: 2px solid #28a745; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.signup-button:hover {
+    background-color: #28a745;
+    color: white; 
+    transform: translateY(-2px);
+}
+
+.signup-button:active {
+    background-color: #218838; 
+    border-color: #1e7e34; 
+    transform: translateY(0);
+}
+
+.signup-button:focus {
+    outline: none; 
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+}
+
+.sBarText{
+    color: white;
+    font-family: "Edu AU VIC WA NT Hand", cursive;
+    font-optical-sizing: auto;
+    font-weight: <weight>;
+    font-style: normal;
+}
+
+.SignupP{
+    background: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+    height: 100%;
+    width: 100%;
+    margin-top: 0%;
+    
+}
+
+/* css for the div to hold all the info needed for the sign up page. */
+.SignUpWrapper{
+    width: 80%;
+    max-width: 50%;
+    height: 65%;
+    padding: 25px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-top: 0%;
+    margin-bottom: 10%;
+    margin-left: 24%;
+    margin-right: 24%;
+    
+}
+
+/* same as other textfeild just smaller font */
+.textfieldSign{
+
+    font-size: 16px;
+}
+/* same as other textfeild just smaller size */
+.textfieldSign input{
+
+    width: 55%;
+    height: 20px;
+
+}
+
