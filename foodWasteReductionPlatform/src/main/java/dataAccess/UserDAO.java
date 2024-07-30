@@ -2,14 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.dataRelated;
+package dataAccess;
 
 /**
  *
- * @author JiaHong
+ * @author Nicholas Jacques
  */
-public enum UserType {
-    RETAILER,
-    CONSUMER,
-    CHARITABLE_ORGANIZATION
+public class UserDAO {
+    
 }
