@@ -4,7 +4,7 @@
  */
 package dataAccess;
 
-import dataObjects.FoodItems;
+import dataObjects.FoodItemsDTO;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class FoodItemsDAO {
     private static final String DELETE_QUERY = "DELETE FROM food_items WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM food_items";
 
-    public void addFoodItem(FoodItems foodItem) {
+    public void addFoodItem(FoodItemsDTO foodItem) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
             preparedStatement.setInt(1, foodItem.getUserID());
@@ -43,15 +43,15 @@ public class FoodItemsDAO {
         }
     }
 
-    public FoodItems getFoodItem(int id) {
-        FoodItems foodItem = null;
+    public FoodItemsDTO getFoodItem(int id) {
+        FoodItemsDTO foodItem = null;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                foodItem = new FoodItems();
+                foodItem = new FoodItemsDTO();
                 foodItem.setId(rs.getInt("id"));
                 foodItem.setUserID(rs.getInt("userID"));
                 foodItem.setName(rs.getString("name"));
@@ -68,14 +68,14 @@ public class FoodItemsDAO {
         return foodItem;
     }
 
-    public List<FoodItems> getAllFoodItems() {
-        List<FoodItems> foodItems = new ArrayList<>();
+    public List<FoodItemsDTO> getAllFoodItems() {
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                FoodItems foodItem = new FoodItems();
+                FoodItemsDTO foodItem = new FoodItemsDTO();
                 foodItem.setId(rs.getInt("id"));
                 foodItem.setUserID(rs.getInt("userID"));
                 foodItem.setName(rs.getString("name"));
@@ -93,7 +93,7 @@ public class FoodItemsDAO {
         return foodItems;
     }
 
-    public boolean updateFoodItem(FoodItems foodItem) {
+    public boolean updateFoodItem(FoodItemsDTO foodItem) {
         boolean rowUpdated = false;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
