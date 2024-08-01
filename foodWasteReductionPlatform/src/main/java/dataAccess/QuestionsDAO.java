@@ -4,7 +4,7 @@
  */
 package dataAccess;
 
-import dataObjects.Questions;
+import dataObjects.QuestionsDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class QuestionsDAO {
     private static final String DELETE_QUERY = "DELETE FROM questions WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM questions";
 
-    public void addQuestion(Questions question) {
+    public void addQuestion(QuestionsDTO question) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
             preparedStatement.setString(1, question.getQuestionDescription());
@@ -35,15 +35,15 @@ public class QuestionsDAO {
         }
     }
 
-    public Questions getQuestion(int id) {
-        Questions question = null;
+    public QuestionsDTO getQuestion(int id) {
+        QuestionsDTO question = null;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                question = new Questions();
+                question = new QuestionsDTO();
                 question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
             }
@@ -53,14 +53,14 @@ public class QuestionsDAO {
         return question;
     }
 
-    public List<Questions> getAllQuestions() {
-        List<Questions> questions = new ArrayList<>();
+    public List<QuestionsDTO> getAllQuestions() {
+        List<QuestionsDTO> questions = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                Questions question = new Questions();
+                QuestionsDTO question = new QuestionsDTO();
                 question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
                 questions.add(question);
@@ -71,7 +71,7 @@ public class QuestionsDAO {
         return questions;
     }
 
-    public boolean updateQuestion(Questions question) {
+    public boolean updateQuestion(QuestionsDTO question) {
         boolean rowUpdated = false;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
