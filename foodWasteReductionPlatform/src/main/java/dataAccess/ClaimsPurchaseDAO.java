@@ -4,7 +4,7 @@
  */
 package dataAccess;
 
-import dataObjects.Claims_Purchase;
+import dataObjects.Claims_PurchaseDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ClaimsPurchaseDAO {
     private static final String DELETE_QUERY = "DELETE FROM claims_purchase WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM claims_purchase";
 
-    public void addClaim(Claims_Purchase claim) {
+    public void addClaim(Claims_PurchaseDTO claim) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
             preparedStatement.setInt(1, claim.getFoodItemID());
@@ -38,15 +38,15 @@ public class ClaimsPurchaseDAO {
         }
     }
 
-    public Claims_Purchase getClaim(int id) {
-        Claims_Purchase claim = null;
+    public Claims_PurchaseDTO getClaim(int id) {
+        Claims_PurchaseDTO claim = null;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                claim = new Claims_Purchase();
+                claim = new Claims_PurchaseDTO();
                 claim.setId(rs.getInt("id"));
                 claim.setFoodItemID(rs.getInt("foodItemID"));
                 claim.setQuantity(rs.getInt("quantity"));
@@ -59,14 +59,14 @@ public class ClaimsPurchaseDAO {
         return claim;
     }
 
-    public List<Claims_Purchase> getAllClaims() {
-        List<Claims_Purchase> claims = new ArrayList<>();
+    public List<Claims_PurchaseDTO> getAllClaims() {
+        List<Claims_PurchaseDTO> claims = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
-                Claims_Purchase claim = new Claims_Purchase();
+                Claims_PurchaseDTO claim = new Claims_PurchaseDTO();
                 claim.setId(rs.getInt("id"));
                 claim.setFoodItemID(rs.getInt("foodItemID"));
                 claim.setQuantity(rs.getInt("quantity"));
@@ -80,7 +80,7 @@ public class ClaimsPurchaseDAO {
         return claims;
     }
 
-    public boolean updateClaim(Claims_Purchase claim) {
+    public boolean updateClaim(Claims_PurchaseDTO claim) {
         boolean rowUpdated = false;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
