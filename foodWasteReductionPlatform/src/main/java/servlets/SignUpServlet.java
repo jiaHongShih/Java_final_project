@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package servlets;
 
 import dataObjects.UserDTO;
@@ -12,22 +8,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Nicholas Jacques
- */
 public class SignUpServlet extends HttpServlet {
-        private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name"); //create variables with each parameter from form
+        // Retrieve form parameters
+        String name = request.getParameter("name");
         String email = request.getParameter("email");
         String password = request.getParameter("pass");
-        String userType = request.getParameter("question");
+        String userTypeParam = request.getParameter("question");
         String location = request.getParameter("location");
+
+        // Determine the user type from the radio button selection
+        UserDTO.UserType userType = null;
+        if ("Consumer".equals(userTypeParam)) {
+            userType = UserDTO.UserType.CONSUMER;
+        } else if ("Retailers".equals(userTypeParam)) {
+            userType = UserDTO.UserType.RETAILER;
+        } else if ("Charitable Organization".equals(userTypeParam)) {
+            userType = UserDTO.UserType.CHARITABLE_ORGANIZATION;
+        }
         
-        if (BusinessLogic.addUser(name, email, password, userType, location) == true) { 
-            response.sendRedirect("index.jsp"); //change page
+        // Call BusinessLogic to add the user
+        boolean success = BusinessLogic.addUser(name, email, password, userType, location);
+
+        if (success) {
+            // Redirect to the login page or another appropriate page upon successful signup
+            response.sendRedirect("index.jsp");
+        } else {
+            // Redirect back to the signup page with an error message
+            response.sendRedirect("signup.jsp?error=Signup+failed");
+        }
     }
 }
