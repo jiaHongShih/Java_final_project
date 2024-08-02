@@ -16,6 +16,17 @@ public class UserQuestionsDTO {
     private int userID;
     private String answer;
 
+    public UserQuestionsDTO() {
+    }
+
+    public UserQuestionsDTO(int id, int questionID, String email, int userID, String answer) {
+        this.id = id;
+        this.questionID = questionID;
+        this.email = email;
+        this.userID = userID;
+        this.answer = answer;
+    }
+
     public int getId() {
         return id;
     }
