@@ -4,7 +4,7 @@
  */
 package servlets;
 
-import dataAccess.BusinessLogic;
+import functions.BusinessLogic;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
