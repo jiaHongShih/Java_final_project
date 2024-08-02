@@ -86,7 +86,7 @@ body {
 }
 
 .Sidebar{
-    background-image: url(/Photos/sidebar.jpg);
+    background-image: url(./Photos/sidebar.jpg);
     padding: 20px;
 }
 
@@ -137,38 +137,97 @@ body {
 
 .SignupP{
     background: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+    background-repeat: no-repeat;
     height: 100%;
-    width: 100%;
-    margin-top: 0%;
-    
+    background-position: center;
+    background-size: cover;
 }
 
 /* css for the div to hold all the info needed for the sign up page. */
 .SignUpWrapper{
     width: 80%;
     max-width: 50%;
-    height: 65%;
+    height: 82%;
     padding: 25px;
     background-color: #f0f0f0;
     border: 2px solid #ccc;
     border-radius: 10px;
-    margin-top: 0%;
+    margin-top: 2%;
     margin-bottom: 10%;
     margin-left: 24%;
     margin-right: 24%;
-    
+    font-size: 12px;
+
+}
+
+.FPassWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 50%;
+    height: 82%;
+    padding: 25px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-top: 2%;
+    margin-bottom: 10%;
+    margin-left: 24%;
+    margin-right: 24%;
+}
+
+#Back2Login{
+    padding-bottom: 5px;
 }
 
 /* same as other textfeild just smaller font */
 .textfieldSign{
 
-    font-size: 16px;
+    font-size: 14px;
 }
 /* same as other textfeild just smaller size */
 .textfieldSign input{
 
-    width: 55%;
-    height: 20px;
+    width: 45%;
+    height: 15px;
 
 }
+
+#SqTitle, #sTitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    padding-top: 1%;
+}
+
+#TOA{
+    display: inline-block;
+    padding-bottom: 2%;
+}
+
+#PickAcc{
+    display: block;
+}
+
+body{
+    background-color: #28a745;
+
+}
+
+#FPassPhoto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 40%;
+    max-height: 40%;
+    
+}
+
+#ContainerSQuestions{
+    display: inline;
+}
+
+
 
