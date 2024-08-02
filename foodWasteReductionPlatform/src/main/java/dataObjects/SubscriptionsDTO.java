@@ -10,7 +10,6 @@ package dataObjects;
  */
 public class SubscriptionsDTO {
 
-    private int id;
     private int userID;
     private String phoneNum;
     private String CommunicationMethod;
@@ -19,22 +18,14 @@ public class SubscriptionsDTO {
     public SubscriptionsDTO() {
     }
 
-    public SubscriptionsDTO(int id, int userID, String phoneNum,
+    public SubscriptionsDTO(int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
         this.CommunicationMethod = communicationMethod;
         this.foodPreferences = foodPreferences;
-        this.id = id;
         this.phoneNum = phoneNum;
         this.userID = userID;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getUserID() {
         return userID;

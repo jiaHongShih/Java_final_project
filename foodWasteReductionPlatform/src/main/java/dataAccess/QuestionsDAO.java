@@ -44,7 +44,6 @@ public class QuestionsDAO {
 
             if (rs.next()) {
                 question = new QuestionsDTO();
-                question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
             }
         } catch (SQLException e) {
@@ -61,7 +60,6 @@ public class QuestionsDAO {
 
             while (rs.next()) {
                 QuestionsDTO question = new QuestionsDTO();
-                question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
                 questions.add(question);
             }
@@ -76,7 +74,6 @@ public class QuestionsDAO {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
             preparedStatement.setString(1, question.getQuestionDescription());
-            preparedStatement.setInt(2, question.getId());
 
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {

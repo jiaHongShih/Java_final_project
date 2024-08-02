@@ -25,86 +25,86 @@ import java.util.regex.Pattern;
 
 public class BusinessLogic {
 
-    public static boolean addUser(int id, String name, String email,
+    public static boolean addUser(String name, String email,
             String password, UserDTO.UserType userType, String location) {
-        if (validUser(id, name, email, password, userType, location)) {
-            UserDTO user = new UserDTO(id, name, email, password, userType, location);
+        if (validUser(name, email, password, userType, location)) {
+            UserDTO user = new UserDTO(name, email, password, userType, location);
             UserDAO userDAO = new UserDAO();
             userDAO.insertUser(user);
             return true;
         } else {
-            Logger.log("Failed to add user. Validation failed for: id=" + id + ", name=" + name + ", email=" + email);
+            Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
             return false;
         }
     }
 
-    public static boolean addFoodItem(int id, int userID, String name,
+    public static boolean addFoodItem(int userID, String name,
             int quantity, LocalDate expirationDate, double price, Timestamp startDate,
             Timestamp endDate, String foodType) {
-        if (isValidFoodItem(id, userID, name, quantity, expirationDate, price, startDate, endDate, foodType)) {
-            FoodItemsDTO foodItem = new FoodItemsDTO(id, userID, name, quantity, expirationDate, price, startDate, endDate, foodType);
+        if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType)) {
+            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodType);
             FoodItemsDAO foodItemsDAO = new FoodItemsDAO();
             foodItemsDAO.addFoodItem(foodItem);
             return true;
         } else {
-            Logger.log("Failed to add food item. Validation failed for: id=" + id + ", userID=" + userID + ", name=" + name);
+            Logger.log("Failed to add food item. Validation failed for: userID=" + userID + ", name=" + name);
             return false;
         }
     }
 
-    public static boolean addSubscription(int id, int userID, String phoneNum,
+    public static boolean addSubscription(int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
-        if (isValidSubscription(id, userID, phoneNum, communicationMethod, foodPreferences)) {
-            SubscriptionsDTO subscription = new SubscriptionsDTO(id, userID, phoneNum, communicationMethod, foodPreferences);
+        if (isValidSubscription(userID, phoneNum, communicationMethod, foodPreferences)) {
+            SubscriptionsDTO subscription = new SubscriptionsDTO(userID, phoneNum, communicationMethod, foodPreferences);
             SubscriptionsDAO subscriptionsDAO = new SubscriptionsDAO();
             subscriptionsDAO.addSubscription(subscription);
             return true;
         } else {
-            Logger.log("Failed to add subscription. Validation failed for: id=" + id + ", userID=" + userID + ", phoneNum=" + phoneNum);
+            Logger.log("Failed to add subscription. Validation failed for: userID=" + userID + ", phoneNum=" + phoneNum);
             return false;
         }
     }
 
-    public static boolean addUserQuestion(int id, int questionID, String email,
+    public static boolean addUserQuestion(int questionID, String email,
             int userID, String answer) {
-        if (isValidUserQuestion(id, questionID, email, userID, answer)) {
-            UserQuestionsDTO userQuestion = new UserQuestionsDTO(id, questionID, email, userID, answer);
+        if (isValidUserQuestion(questionID, email, userID, answer)) {
+            UserQuestionsDTO userQuestion = new UserQuestionsDTO(questionID, email, userID, answer);
             UserQuestionsDAO userQuestionsDAO = new UserQuestionsDAO();
             userQuestionsDAO.addUserQuestion(userQuestion);
             return true;
         } else {
-            Logger.log("Failed to add user question. Validation failed for: id=" + id + ", questionID=" + questionID + ", email=" + email);
+            Logger.log("Failed to add user question. Validation failed for: questionID=" + questionID + ", email=" + email);
             return false;
         }
     }
 
-    public static boolean addClaimsPurchase(int id, int foodItemID, int quantity, int userID, Timestamp claimedAt) {
-        if (isValidClaimsPurchase(id, foodItemID, quantity, userID, claimedAt)) {
-            Claims_PurchaseDTO claimsPurchase = new Claims_PurchaseDTO(id, foodItemID, quantity, userID, claimedAt);
+    public static boolean addClaimsPurchase(int foodItemID, int quantity, int userID, Timestamp claimedAt) {
+        if (isValidClaimsPurchase(foodItemID, quantity, userID, claimedAt)) {
+            Claims_PurchaseDTO claimsPurchase = new Claims_PurchaseDTO(foodItemID, quantity, userID, claimedAt);
             ClaimsPurchaseDAO claimsPurchaseDAO = new ClaimsPurchaseDAO();
             claimsPurchaseDAO.addClaim(claimsPurchase);
             return true;
         } else {
-            Logger.log("Failed to add claims purchase. Validation failed for: id=" + id + ", foodItemID=" + foodItemID + ", quantity=" + quantity);
+            Logger.log("Failed to add claims purchase. Validation failed for: foodItemID=" + foodItemID + ", quantity=" + quantity);
             return false;
         }
     }
 
-    private static boolean isValidClaimsPurchase(int id, int foodItemID, int quantity, int userID, Timestamp claimedAt) {
-        boolean isValid = isValidId(id)
-                && isValidFoodItemId(foodItemID)
+    private static boolean isValidClaimsPurchase(int foodItemID, int quantity, int userID, Timestamp claimedAt) {
+        boolean isValid = 
+                isValidFoodItemId(foodItemID)
                 && isValidQuantity(quantity)
                 && isValidUserId(userID)
                 && isValidClaimedAt(claimedAt);
         if (!isValid) {
-            Logger.log("Claims Purchase Validation Failed: id=" + id + ", foodItemID=" + foodItemID + ", quantity=" + quantity + ", userID=" + userID + ", claimedAt=" + claimedAt);
+            Logger.log("Claims Purchase Validation Failed: foodItemID=" + foodItemID + ", quantity=" + quantity + ", userID=" + userID + ", claimedAt=" + claimedAt);
         }
         return isValid;
     }
 
-    private static boolean isValidFoodItem(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
-        boolean isValid = isValidId(id)
-                && isValidUserID(userID)
+    private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
+        boolean isValid =
+                isValidUserID(userID)
                 && isValidName(name)
                 && isValidQuantity(quantity)
                 && isValidExpirationDate(expirationDate)
@@ -113,15 +113,7 @@ public class BusinessLogic {
                 && isValidEndDate(startDate, endDate)
                 && isValidFoodType(foodType);
         if (!isValid) {
-            Logger.log("Food Item Validation Failed: id=" + id + ", userID=" + userID + ", name=" + name);
-        }
-        return isValid;
-    }
-
-    private static boolean isValidId(int id) {
-        boolean isValid = id > 0;
-        if (!isValid) {
-            Logger.log("Invalid ID: " + id);
+            Logger.log("Food Item Validation Failed: userID=" + userID + ", name=" + name);
         }
         return isValid;
     }
@@ -200,15 +192,15 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean validUser(int id, String name, String email, String password, UserDTO.UserType userType, String location) {
-        boolean isValid = isValidId(id)
-                && isValidName(name)
+    private static boolean validUser(String name, String email, String password, UserDTO.UserType userType, String location) {
+        boolean isValid = 
+                isValidName(name)
                 && isValidEmail(email)
                 && isValidPassword(password)
                 && isValidUserType(userType)
                 && isValidLocation(location);
         if (!isValid) {
-            Logger.log("User Validation Failed: id=" + id + ", name=" + name + ", email=" + email);
+            Logger.log("User Validation Failed: name=" + name + ", email=" + email);
         }
         return isValid;
     }
@@ -253,15 +245,15 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidSubscription(int id, int userID, String phoneNum,
+    private static boolean isValidSubscription(int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
-        boolean isValid = isValidId(id)
-                && isValidUserID(userID)
+        boolean isValid =
+                isValidUserID(userID)
                 && isValidPhoneNum(phoneNum)
                 && isValidCommunicationMethod(communicationMethod)
                 && isValidFoodPreferences(foodPreferences);
         if (!isValid) {
-            Logger.log("Subscription Validation Failed: id=" + id + ", userID=" + userID + ", phoneNum=" + phoneNum);
+            Logger.log("Subscription Validation Failed: userID=" + userID + ", phoneNum=" + phoneNum);
         }
         return isValid;
     }
@@ -300,15 +292,15 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidUserQuestion(int id, int questionID, String email,
+    private static boolean isValidUserQuestion(int questionID, String email,
             int userID, String answer) {
-        boolean isValid = isValidId(id)
-                && isValidQuestionID(questionID)
+        boolean isValid = 
+                 isValidQuestionID(questionID)
                 && isValidEmail(email)
                 && isValidUserID(userID)
                 && isValidAnswer(answer);
         if (!isValid) {
-            Logger.log("User Question Validation Failed: id=" + id + ", questionID=" + questionID + ", email=" + email);
+            Logger.log("User Question Validation Failed: questionID=" + questionID + ", email=" + email);
         }
         return isValid;
     }

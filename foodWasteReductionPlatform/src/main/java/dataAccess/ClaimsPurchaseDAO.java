@@ -47,7 +47,6 @@ public class ClaimsPurchaseDAO {
 
             if (rs.next()) {
                 claim = new Claims_PurchaseDTO();
-                claim.setId(rs.getInt("id"));
                 claim.setFoodItemID(rs.getInt("foodItemID"));
                 claim.setQuantity(rs.getInt("quantity"));
                 claim.setUserID(rs.getInt("userID"));
@@ -67,7 +66,6 @@ public class ClaimsPurchaseDAO {
 
             while (rs.next()) {
                 Claims_PurchaseDTO claim = new Claims_PurchaseDTO();
-                claim.setId(rs.getInt("id"));
                 claim.setFoodItemID(rs.getInt("foodItemID"));
                 claim.setQuantity(rs.getInt("quantity"));
                 claim.setUserID(rs.getInt("userID"));
@@ -88,7 +86,6 @@ public class ClaimsPurchaseDAO {
             preparedStatement.setInt(2, claim.getQuantity());
             preparedStatement.setInt(3, claim.getUserID());
             preparedStatement.setTimestamp(4, claim.getClaimedAt());
-            preparedStatement.setInt(5, claim.getId());
 
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
