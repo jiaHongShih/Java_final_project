@@ -4,7 +4,6 @@
  */
 package servlets;
 
-import dataObjects.UserDTO;
 import functions.BusinessLogic;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Nicholas Jacques
  */
-public class SignUpServlet extends HttpServlet {
+public class ForgotPasswordServlet extends HttpServlet {
         private static final long serialVersionUID = 1L;
 
 
@@ -27,7 +26,8 @@ public class SignUpServlet extends HttpServlet {
         String userType = request.getParameter("question");
         String location = request.getParameter("location");
         
-        if (BusinessLogic.addUser(name, email, password, userType, location) == true) { 
-            response.sendRedirect("index.jsp"); //change page
+        BusinessLogic.addUser(name, email, password, userType, location); //pass parameters to businesslogic adduser method
+        
+        response.sendRedirect("index.jsp"); //change page
     }
 }
