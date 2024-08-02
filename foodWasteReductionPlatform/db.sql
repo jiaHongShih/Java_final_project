@@ -1,11 +1,11 @@
 -- Step 1: Drop the database if it already exists (Optional)
-DROP DATABASE IF EXISTS YourDatabaseName;
+DROP DATABASE IF EXISTS FoodWaste;
 
 -- Step 2: Create the database
-CREATE DATABASE YourDatabaseName;
+CREATE DATABASE FoodWaste;
 
 -- Step 3: Use the database
-USE YourDatabaseName;
+USE FoodWaste;
 
 -- Step 4: Create the tables
 CREATE TABLE Users (
