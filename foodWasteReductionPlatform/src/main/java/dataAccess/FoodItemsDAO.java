@@ -52,7 +52,6 @@ public class FoodItemsDAO {
 
             if (rs.next()) {
                 foodItem = new FoodItemsDTO();
-                foodItem.setId(rs.getInt("id"));
                 foodItem.setUserID(rs.getInt("userID"));
                 foodItem.setName(rs.getString("name"));
                 foodItem.setQuantity(rs.getInt("quantity"));
@@ -76,7 +75,6 @@ public class FoodItemsDAO {
 
             while (rs.next()) {
                 FoodItemsDTO foodItem = new FoodItemsDTO();
-                foodItem.setId(rs.getInt("id"));
                 foodItem.setUserID(rs.getInt("userID"));
                 foodItem.setName(rs.getString("name"));
                 foodItem.setQuantity(rs.getInt("quantity"));
@@ -105,7 +103,6 @@ public class FoodItemsDAO {
             preparedStatement.setTimestamp(6, foodItem.getStartDate());
             preparedStatement.setTimestamp(7, foodItem.getEndDate());
             preparedStatement.setString(8, foodItem.getFoodType());
-            preparedStatement.setInt(9, foodItem.getId());
 
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {

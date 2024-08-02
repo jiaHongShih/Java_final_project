@@ -65,7 +65,6 @@ public class UserDAO {
                 UserDTO.UserType userType = UserDTO.UserType.valueOf(rs.getString("userType"));
                 String location = rs.getString("location");
                 user = new UserDTO();
-                user.setId(id);
                 user.setName(name);
                 user.setEmail(email);
                 user.setPassword(password);
@@ -95,7 +94,6 @@ public class UserDAO {
                 UserDTO.UserType userType = UserDTO.UserType.valueOf(rs.getString("userType"));
                 String location = rs.getString("location");
                 UserDTO user = new UserDTO();
-                user.setId(id);
                 user.setName(name);
                 user.setEmail(email);
                 user.setPassword(password);
@@ -140,7 +138,6 @@ public class UserDAO {
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.setString(4, user.getUserType().name());
             preparedStatement.setString(5, user.getLocation());
-            preparedStatement.setInt(6, user.getId());
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             printSQLException(e);

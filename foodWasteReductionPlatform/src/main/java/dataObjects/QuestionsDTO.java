@@ -10,16 +10,8 @@ package dataObjects;
  */
 public class QuestionsDTO {
     
-    private int id;
     private String questionDescription;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getQuestionDescription() {
         return questionDescription;

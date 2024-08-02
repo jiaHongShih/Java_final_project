@@ -47,7 +47,6 @@ public class SubscriptionsDAO {
 
             if (rs.next()) {
                 subscription = new SubscriptionsDTO();
-                subscription.setId(rs.getInt("id"));
                 subscription.setUserID(rs.getInt("userID"));
                 subscription.setPhoneNum(rs.getString("phoneNum"));
                 subscription.setCommunicationMethod(rs.getString("CommunicationMethod"));
@@ -67,7 +66,6 @@ public class SubscriptionsDAO {
 
             while (rs.next()) {
                 SubscriptionsDTO subscription = new SubscriptionsDTO();
-                subscription.setId(rs.getInt("id"));
                 subscription.setUserID(rs.getInt("userID"));
                 subscription.setPhoneNum(rs.getString("phoneNum"));
                 subscription.setCommunicationMethod(rs.getString("CommunicationMethod"));
@@ -88,7 +86,6 @@ public class SubscriptionsDAO {
             preparedStatement.setString(2, subscription.getPhoneNum());
             preparedStatement.setString(3, subscription.getCommunicationMethod());
             preparedStatement.setString(4, subscription.getFoodPreferences());
-            preparedStatement.setInt(5, subscription.getId());
 
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
