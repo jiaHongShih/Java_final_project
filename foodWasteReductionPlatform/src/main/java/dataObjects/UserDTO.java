@@ -16,6 +16,16 @@ public class UserDTO {
     private UserType userType;
     private String location;
 
+    public UserDTO(){}
+    public UserDTO(int id, String name, String email,
+            String password, UserDTO.UserType userType, String location) {
+            this.email = email;
+            this.id = id;
+            this.location = location;
+            this.name = name;
+            this.password = password;
+            this.userType = userType;
+    }
     public void setId(int id) {
         this.id = id;
     }

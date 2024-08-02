@@ -9,12 +9,24 @@ package dataObjects;
  * @author Josh Barrett
  */
 public class SubscriptionsDTO {
-    
+
     private int id;
     private int userID;
     private String phoneNum;
     private String CommunicationMethod;
     private String foodPreferences;
+
+    public SubscriptionsDTO() {
+    }
+
+    public SubscriptionsDTO(int id, int userID, String phoneNum,
+            String communicationMethod, String foodPreferences) {
+        this.CommunicationMethod = communicationMethod;
+        this.foodPreferences = foodPreferences;
+        this.id = id;
+        this.phoneNum = phoneNum;
+        this.userID = userID;
+    }
 
     public int getId() {
         return id;
@@ -55,5 +67,5 @@ public class SubscriptionsDTO {
     public void setFoodPreferences(String foodPreferences) {
         this.foodPreferences = foodPreferences;
     }
-   
+
 }
