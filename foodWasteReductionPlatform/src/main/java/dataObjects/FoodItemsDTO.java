@@ -13,7 +13,6 @@ import java.sql.Timestamp;
  */
 public class FoodItemsDTO {
 
-    private int id;
     private int userID;
     private String name;
     private int quantity;
@@ -24,8 +23,7 @@ public class FoodItemsDTO {
     private String foodType;
 
     public FoodItemsDTO(){}
-    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
-        this.id = id;
+    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
         this.userID = userID;
         this.name = name;
         this.quantity = quantity;
@@ -35,13 +33,6 @@ public class FoodItemsDTO {
         this.foodType = foodType;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getUserID() {
         return userID;

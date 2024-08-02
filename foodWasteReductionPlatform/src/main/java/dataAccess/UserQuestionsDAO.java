@@ -47,7 +47,6 @@ public class UserQuestionsDAO {
 
             if (rs.next()) {
                 userQuestion = new UserQuestionsDTO();
-                userQuestion.setId(rs.getInt("id"));
                 userQuestion.setQuestionID(rs.getInt("questionID"));
                 userQuestion.setEmail(rs.getString("email"));
                 userQuestion.setUserID(rs.getInt("userID"));
@@ -67,7 +66,6 @@ public class UserQuestionsDAO {
 
             while (rs.next()) {
                 UserQuestionsDTO userQuestion = new UserQuestionsDTO();
-                userQuestion.setId(rs.getInt("id"));
                 userQuestion.setQuestionID(rs.getInt("questionID"));
                 userQuestion.setEmail(rs.getString("email"));
                 userQuestion.setUserID(rs.getInt("userID"));
@@ -88,7 +86,6 @@ public class UserQuestionsDAO {
             preparedStatement.setString(2, userQuestion.getEmail());
             preparedStatement.setInt(3, userQuestion.getUserID());
             preparedStatement.setString(4, userQuestion.getAnswer());
-            preparedStatement.setInt(5, userQuestion.getId());
 
             rowUpdated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
