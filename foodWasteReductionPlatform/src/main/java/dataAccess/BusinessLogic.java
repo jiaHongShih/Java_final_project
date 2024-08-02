@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dataAccess;
 
 import dataObjects.Claims_PurchaseDTO;
@@ -14,10 +10,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Nicholas Jacques
- */
 public class BusinessLogic {
 
     public static boolean addUser(int id, String name, String email,
@@ -28,6 +20,7 @@ public class BusinessLogic {
             userDAO.insertUser(user);
             return true;
         } else {
+            Logger.log("Failed to add user. Validation failed for: id=" + id + ", name=" + name + ", email=" + email);
             return false;
         }
     }
@@ -41,11 +34,11 @@ public class BusinessLogic {
             foodItemsDAO.addFoodItem(foodItem);
             return true;
         } else {
+            Logger.log("Failed to add food item. Validation failed for: id=" + id + ", userID=" + userID + ", name=" + name);
             return false;
         }
     }
 
-//    isValidSubscription
     public static boolean addSubscription(int id, int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
         if (isValidSubscription(id, userID, phoneNum, communicationMethod, foodPreferences)) {
@@ -54,6 +47,7 @@ public class BusinessLogic {
             subscriptionsDAO.addSubscription(subscription);
             return true;
         } else {
+            Logger.log("Failed to add subscription. Validation failed for: id=" + id + ", userID=" + userID + ", phoneNum=" + phoneNum);
             return false;
         }
     }
@@ -66,6 +60,7 @@ public class BusinessLogic {
             userQuestionsDAO.addUserQuestion(userQuestion);
             return true;
         } else {
+            Logger.log("Failed to add user question. Validation failed for: id=" + id + ", questionID=" + questionID + ", email=" + email);
             return false;
         }
     }
@@ -77,41 +72,25 @@ public class BusinessLogic {
             claimsPurchaseDAO.addClaim(claimsPurchase);
             return true;
         } else {
+            Logger.log("Failed to add claims purchase. Validation failed for: id=" + id + ", foodItemID=" + foodItemID + ", quantity=" + quantity);
             return false;
         }
     }
 
-    //private method to validate
     private static boolean isValidClaimsPurchase(int id, int foodItemID, int quantity, int userID, Timestamp claimedAt) {
-        return isValidId(id)
+        boolean isValid = isValidId(id)
                 && isValidFoodItemId(foodItemID)
                 && isValidQuantity(quantity)
                 && isValidUserId(userID)
                 && isValidClaimedAt(claimedAt);
-    }
-
-    private static boolean isValidId(int id) {
-        return id > 0;
-    }
-
-    private static boolean isValidFoodItemId(int foodItemID) {
-        return foodItemID > 0;
-    }
-
-    private static boolean isValidQuantity(int quantity) {
-        return quantity >= 0;
-    }
-
-    private static boolean isValidUserId(int userID) {
-        return userID > 0;
-    }
-
-    private static boolean isValidClaimedAt(Timestamp claimedAt) {
-        return claimedAt != null;
+        if (!isValid) {
+            Logger.log("Claims Purchase Validation Failed: id=" + id + ", foodItemID=" + foodItemID + ", quantity=" + quantity + ", userID=" + userID + ", claimedAt=" + claimedAt);
+        }
+        return isValid;
     }
 
     private static boolean isValidFoodItem(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
-        return isValidId(id)
+        boolean isValid = isValidId(id)
                 && isValidUserID(userID)
                 && isValidName(name)
                 && isValidQuantity(quantity)
@@ -120,101 +99,220 @@ public class BusinessLogic {
                 && isValidStartDate(startDate)
                 && isValidEndDate(startDate, endDate)
                 && isValidFoodType(foodType);
+        if (!isValid) {
+            Logger.log("Food Item Validation Failed: id=" + id + ", userID=" + userID + ", name=" + name);
+        }
+        return isValid;
+    }
+
+    private static boolean isValidId(int id) {
+        boolean isValid = id > 0;
+        if (!isValid) {
+            Logger.log("Invalid ID: " + id);
+        }
+        return isValid;
+    }
+
+    private static boolean isValidFoodItemId(int foodItemID) {
+        boolean isValid = foodItemID > 0;
+        if (!isValid) {
+            Logger.log("Invalid Food Item ID: " + foodItemID);
+        }
+        return isValid;
+    }
+
+    private static boolean isValidQuantity(int quantity) {
+        boolean isValid = quantity >= 0;
+        if (!isValid) {
+            Logger.log("Invalid Quantity: " + quantity);
+        }
+        return isValid;
+    }
+
+    private static boolean isValidUserId(int userID) {
+        boolean isValid = userID > 0;
+        if (!isValid) {
+            Logger.log("Invalid User ID: " + userID);
+        }
+        return isValid;
+    }
+
+    private static boolean isValidClaimedAt(Timestamp claimedAt) {
+        boolean isValid = claimedAt != null;
+        if (!isValid) {
+            Logger.log("Invalid Claimed At Timestamp: " + claimedAt);
+        }
+        return isValid;
     }
 
     private static boolean isValidName(String name) {
-        return name != null && !name.trim().isEmpty();
+        boolean isValid = name != null && !name.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Name: " + name);
+        }
+        return isValid;
     }
 
     private static boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
-        return email != null && pattern.matcher(email).matches();
+        boolean isValid = email != null && pattern.matcher(email).matches();
+        if (!isValid) {
+            Logger.log("Invalid Email: " + email);
+        }
+        return isValid;
     }
 
     private static boolean isValidPassword(String password) {
-        return password != null && password.length() >= 8;
+        boolean isValid = password != null && password.length() >= 8;
+        if (!isValid) {
+            Logger.log("Invalid Password: " + password);
+        }
+        return isValid;
     }
 
     private static boolean isValidUserType(UserType userType) {
-        return userType != null;
+        boolean isValid = userType != null;
+        if (!isValid) {
+            Logger.log("Invalid UserType: " + userType);
+        }
+        return isValid;
     }
 
     private static boolean isValidLocation(String location) {
-        return location != null && !location.trim().isEmpty();
+        boolean isValid = location != null && !location.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Location: " + location);
+        }
+        return isValid;
     }
 
     private static boolean validUser(int id, String name, String email, String password, UserDTO.UserType userType, String location) {
-        return isValidId(id)
+        boolean isValid = isValidId(id)
                 && isValidName(name)
                 && isValidEmail(email)
                 && isValidPassword(password)
                 && isValidUserType(userType)
                 && isValidLocation(location);
+        if (!isValid) {
+            Logger.log("User Validation Failed: id=" + id + ", name=" + name + ", email=" + email);
+        }
+        return isValid;
     }
 
     private static boolean isValidExpirationDate(LocalDate expirationDate) {
-        return expirationDate != null && expirationDate.isAfter(LocalDate.now());
+        boolean isValid = expirationDate != null && expirationDate.isAfter(LocalDate.now());
+        if (!isValid) {
+            Logger.log("Invalid Expiration Date: " + expirationDate);
+        }
+        return isValid;
     }
 
     private static boolean isValidPrice(double price) {
-        return price >= 0;
+        boolean isValid = price >= 0;
+        if (!isValid) {
+            Logger.log("Invalid Price: " + price);
+        }
+        return isValid;
     }
 
     private static boolean isValidStartDate(Timestamp startDate) {
-        return startDate != null;
+        boolean isValid = startDate != null;
+        if (!isValid) {
+            Logger.log("Invalid Start Date: " + startDate);
+        }
+        return isValid;
     }
 
     private static boolean isValidEndDate(Timestamp startDate, Timestamp endDate) {
-        return endDate != null && startDate != null && endDate.after(startDate);
+        boolean isValid = endDate != null && startDate != null && endDate.after(startDate);
+        if (!isValid) {
+            Logger.log("Invalid End Date: " + endDate + ", Start Date: " + startDate);
+        }
+        return isValid;
     }
 
     private static boolean isValidFoodType(String foodType) {
-        return foodType != null && !foodType.trim().isEmpty();
+        boolean isValid = foodType != null && !foodType.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Food Type: " + foodType);
+        }
+        return isValid;
     }
 
     private static boolean isValidSubscription(int id, int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
-        return isValidId(id)
+        boolean isValid = isValidId(id)
                 && isValidUserID(userID)
                 && isValidPhoneNum(phoneNum)
                 && isValidCommunicationMethod(communicationMethod)
                 && isValidFoodPreferences(foodPreferences);
+        if (!isValid) {
+            Logger.log("Subscription Validation Failed: id=" + id + ", userID=" + userID + ", phoneNum=" + phoneNum);
+        }
+        return isValid;
     }
 
     private static boolean isValidUserID(int userID) {
-        return userID > 0;
+        boolean isValid = userID > 0;
+        if (!isValid) {
+            Logger.log("Invalid UserID: " + userID);
+        }
+        return isValid;
     }
 
     private static boolean isValidPhoneNum(String phoneNum) {
         String phoneRegex = "^\\+?[0-9]{10,13}$";
         Pattern pattern = Pattern.compile(phoneRegex);
-        return phoneNum != null && pattern.matcher(phoneNum).matches();
+        boolean isValid = phoneNum != null && pattern.matcher(phoneNum).matches();
+        if (!isValid) {
+            Logger.log("Invalid Phone Number: " + phoneNum);
+        }
+        return isValid;
     }
 
     private static boolean isValidCommunicationMethod(String communicationMethod) {
-        return communicationMethod != null && !communicationMethod.trim().isEmpty();
+        boolean isValid = communicationMethod != null && !communicationMethod.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Communication Method: " + communicationMethod);
+        }
+        return isValid;
     }
 
     private static boolean isValidFoodPreferences(String foodPreferences) {
-        return foodPreferences != null && !foodPreferences.trim().isEmpty();
+        boolean isValid = foodPreferences != null && !foodPreferences.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Food Preferences: " + foodPreferences);
+        }
+        return isValid;
     }
 
     private static boolean isValidUserQuestion(int id, int questionID, String email,
             int userID, String answer) {
-        return isValidId(id)
+        boolean isValid = isValidId(id)
                 && isValidQuestionID(questionID)
                 && isValidEmail(email)
                 && isValidUserID(userID)
                 && isValidAnswer(answer);
+        if (!isValid) {
+            Logger.log("User Question Validation Failed: id=" + id + ", questionID=" + questionID + ", email=" + email);
+        }
+        return isValid;
     }
 
     private static boolean isValidQuestionID(int questionID) {
-        return questionID > 0;
+        boolean isValid = questionID > 0;
+        if (!isValid) {
+            Logger.log("Invalid Question ID: " + questionID);
+        }
+        return isValid;
     }
 
     private static boolean isValidAnswer(String answer) {
-        return answer != null && !answer.trim().isEmpty();
+        boolean isValid = answer != null && !answer.trim().isEmpty();
+        if (!isValid) {
+            Logger.log("Invalid Answer: " + answer);
+        }
+        return isValid;
     }
-
 }
