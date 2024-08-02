@@ -1,5 +1,10 @@
-package dataAccess;
+package functions;
 
+import dataAccess.ClaimsPurchaseDAO;
+import dataAccess.FoodItemsDAO;
+import dataAccess.SubscriptionsDAO;
+import dataAccess.UserDAO;
+import dataAccess.UserQuestionsDAO;
 import dataObjects.Claims_PurchaseDTO;
 import dataObjects.FoodItemsDTO;
 import dataObjects.SubscriptionsDTO;
