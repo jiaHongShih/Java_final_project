@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package functions;
 
 import dataAccess.ClaimsPurchaseDAO;
@@ -14,6 +18,10 @@ import dataObjects.UserQuestionsDTO;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
+/**
+ *
+ * @author JiaHong
+ */
 
 public class BusinessLogic {
 
