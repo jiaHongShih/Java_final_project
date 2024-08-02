@@ -1,10 +1,13 @@
-DROP DATABASE IF EXISTS FoodWaste;
+-- Step 1: Drop the database if it already exists (Optional)
+DROP DATABASE IF EXISTS YourDatabaseName;
 
+-- Step 2: Create the database
+CREATE DATABASE YourDatabaseName;
 
-CREATE DATABASE FoodWaste;
+-- Step 3: Use the database
+USE YourDatabaseName;
 
-USE FoodWaste;
-
+-- Step 4: Create the tables
 CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -14,19 +17,18 @@ CREATE TABLE Users (
     location VARCHAR(255)
 );
 
+CREATE TABLE Questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    questionDescription VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE UserQuestions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     questionID INT NOT NULL,
     userID INT NOT NULL,
     answer VARCHAR(255) NOT NULL,
-    FOREIGN KEY (userID) REFERENCES Users(id)
+    FOREIGN KEY (userID) REFERENCES Users(id),
     FOREIGN KEY (questionID) REFERENCES Questions(id)
-
-);
-
-CREATE TABLE Questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    questionDescription VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE FoodItems (
