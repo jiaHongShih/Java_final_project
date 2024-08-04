@@ -41,9 +41,9 @@
                     </div>
         
                     <div class="textfieldSign">
-                        <label for="phone">Phone Number</label>
-                        <input type="text" name="phone" id="phone" placeholder="Type your phone number">
-                        <p id="pPhone"></p>
+                        <label for="city">City</label>
+                        <input type="text" name="city" id="city" placeholder="Type your city">
+                        <p id="pCity"></p>
                     </div>
         
                     <div class="textfieldSign">
@@ -63,26 +63,17 @@
                     <br>
 
                     <div class="textfieldSign">
-                        <label for="SecurityQuestion1">What Is The Name Of Your First Cousin?</label>
-                        <input type="text" name="SecurityQuestion1" id="SecurityQuestion1" placeholder="Answer Here">
-                        <p id="pUser"></p>
+                        <label for="SecurityQuestion">Select a Security Question</label>
+                        <select name="SecurityQuestion" id="SecurityQuestion">
+                            <option value="1">What Is The Name Of Your First Cousin?</option>
+                            <option value="2">What Was The Color Of Your First Car?</option>
+                            <option value="3">What City Were You Born In?</option>
+                        </select>
                     </div>
 
                     <div class="textfieldSign">
-                        <label for="SecurityQuestion2">What Was The Color Of Your First Car?</label>
-                        <input type="text" name="SecurityQuestion2" id="SecurityQuestion2" placeholder="Answer Here">
-                        <p id="pUser"></p>
-                    </div>
-
-                    <div class="textfieldSign">
-                        <label for="SecurityQuestion3">What City Were You Born In?</label>
-                        <input type="text" name="SecurityQuestion3" id="SecurityQuestion3" placeholder="Answer Here">
-                        <p id="pUser"></p>
-                    </div>
-
-                    <div class="Sub">
-                        <label for="SubForNoti">Please Click Here To Allow Notifications</label>
-                        <input type="checkbox" name="SubForNoti" id="SubForNoti">
+                        <label for="SecurityAnswer">Answer</label>
+                        <input type="text" name="SecurityAnswer" id="SecurityAnswer" placeholder="Answer Here">
                         <p id="pUser"></p>
                     </div>
 
