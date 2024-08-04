@@ -73,8 +73,8 @@ public class BusinessLogic {
     }
 
     public static boolean addUserQuestion(int questionID, String email,
-            int userID, String answer) {
-        if (isValidUserQuestion(questionID, email, userID, answer)) {
+            String answer) {
+        if (isValidUserQuestion(questionID, email, answer)) {
             UserQuestionsDTO userQuestion = new UserQuestionsDTO(questionID, email, answer);
             UserQuestionsDAO userQuestionsDAO = new UserQuestionsDAO();
             userQuestionsDAO.addUserQuestion(userQuestion);
@@ -299,12 +299,10 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidUserQuestion(int questionID, String email,
-            int userID, String answer) {
+    private static boolean isValidUserQuestion(int questionID, String email, String answer) {
         boolean isValid
                 = isValidQuestionID(questionID)
                 && isValidEmail(email)
-                && isValidUserID(userID)
                 && isValidAnswer(answer);
         if (!isValid) {
             Logger.log("User Question Validation Failed: questionID=" + questionID + ", email=" + email);

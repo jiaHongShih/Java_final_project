@@ -32,7 +32,7 @@
                     <br>
                     <input class="PassTxt" name="pass" placeholder="Password" type="password" required>
                     <br>
-                    <a href="Fpass.html">Forgot Password?</a>
+                    <a href="Fpass.jsp">Forgot Password?</a>
                     <br>
                     <button type="submit" class="login-button">Login!</button>
                 </form>

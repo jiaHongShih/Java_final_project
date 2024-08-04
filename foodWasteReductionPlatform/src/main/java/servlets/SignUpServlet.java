@@ -1,7 +1,5 @@
 package servlets;
 
-import dataAccess.UserDAO;
-import dataObjects.UserDTO;
 import functions.BusinessLogic;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,11 +35,10 @@ public class SignUpServlet extends HttpServlet {
         } else if ("Charitable Organization".equals(userTypeParam)) {
             userType = "CHARITABLE_ORGANIZATION";
         }
-        // Call BusinessLogic to add the user
-        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, city);
-        
+        // Call BusinessLogic to add the user        
         int intQuestion = Integer.parseInt(question);
-        boolean success = BusinessLogic.addUserQuestion(intQuestion, email, answer);
+        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, city)
+                && BusinessLogic.addUserQuestion(intQuestion, email, answer);
         
 //
         if (success) {
@@ -49,7 +46,7 @@ public class SignUpServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
         } else {
             // Redirect back to the signup page with an error message
-            response.sendRedirect("signup.jsp?error=Signup+failed");
+            response.getWriter().println("Error adding the user.");
         }
     }
 }

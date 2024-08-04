@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
         <h1>Forgot Password?</h1>
         <img id="FPassPhoto" src="./Photos/FPass.png" alt="">
 
-        <form action="forgotPassword-URL" method="post">
+        <form action="ForgotPasswordServlet-URL" method="post">
             <div class="FpassInput">
                 <label for="Email">Email Address</label>
                 <input type="text" name="email" id="email" placeholder="Type your email">

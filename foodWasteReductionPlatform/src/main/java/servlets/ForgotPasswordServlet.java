@@ -41,18 +41,18 @@ public class ForgotPasswordServlet extends HttpServlet {
         String securityQuestion = request.getParameter("SQuestionsPick");
         String securityAnswer = request.getParameter("securityAnswer");
 
-        if (email == null || newPassword == null || confirmPassword == null || securityQuestion == null || securityAnswer == null ||
-                email.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty() || securityAnswer.isEmpty()) {
-            request.setAttribute("errorMessage", "All fields are required.");
-            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-            return;
-        }
-
-        if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("errorMessage", "Passwords do not match.");
-            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-            return;
-        }
+//        if (email == null || newPassword == null || confirmPassword == null || securityQuestion == null || securityAnswer == null ||
+//                email.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty() || securityAnswer.isEmpty()) {
+//            request.setAttribute("errorMessage", "All fields are required.");
+//            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
+//            return;
+//        }
+//
+//        if (!newPassword.equals(confirmPassword)) {
+//            request.setAttribute("errorMessage", "Passwords do not match.");
+//            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
+//            return;
+//        }
 
         try {
             UserDTO user = userDAO.selectUserByEmail(email);
