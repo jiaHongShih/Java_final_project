@@ -11,7 +11,7 @@
 
     <!-- Servlet Mapping -->
     <servlet-mapping>
-        <servlet-name>SignUpServlet-NAME</servlet-name>
+        <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup-URL</url-pattern>
     </servlet-mapping>
     <session-config>

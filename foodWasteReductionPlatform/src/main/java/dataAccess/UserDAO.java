@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.UserDTO;
+import functions.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +13,15 @@ import java.util.List;
 /**
  * UserDAO - A Data Access Object (DAO) class for managing UserDTO entities.
  * Provides methods for performing CRUD operations on user data in the database.
- * 
+ *
  * @author Josh Barrett
  */
 public class UserDAO {
-    
-    // Database connection details
-    private static final String DB_URL = "jdbc:your_database_url";
-    private static final String DB_USERNAME = "your_username";
-    private static final String DB_PASSWORD = "your_password";
 
+    // Database connection details
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
     // SQL queries
     private static final String INSERT_USER_SQL = "INSERT INTO users (name, email, password, userType, location) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
@@ -31,33 +31,43 @@ public class UserDAO {
 
     /**
      * Inserts a new user into the database.
+     *
      * @param user UserDTO object containing user data to be inserted.
      */
     public void insertUser(UserDTO user) {
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL)) {
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getUserType().name());
-            preparedStatement.setString(5, user.getLocation());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_USER_SQL);
+            prepQuery.setString(1, user.getName());
+            prepQuery.setString(2, user.getEmail());
+            prepQuery.setString(3, user.getPassword());
+            prepQuery.setString(4, user.getUserType().name());
+            prepQuery.setString(5, user.getLocation());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     /**
      * Selects a user from the database by ID.
+     *
      * @param id The ID of the user to be retrieved.
      * @return UserDTO object containing user data, or null if not found.
      */
     public UserDTO selectUser(int id) {
         UserDTO user = null;
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_USER_BY_ID);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
@@ -73,19 +83,28 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             printSQLException(e);
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return user;
     }
 
     /**
      * Retrieves all users from the database.
+     *
      * @return List of UserDTO objects containing data for all users.
      */
     public List<UserDTO> selectAllUsers() {
         List<UserDTO> users = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_USERS);
+            rs = prepQuery.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
@@ -103,50 +122,74 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             printSQLException(e);
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return users;
     }
 
-      /**
+    /**
      * Deletes a user from the database by ID.
+     *
      * @param id The ID of the user to be deleted.
      * @return true if the user was successfully deleted, false otherwise.
      */
     public boolean deleteUser(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_SQL)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_USER_SQL);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             printSQLException(e);
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }
 
     /**
      * Updates an existing user in the database.
+     *
      * @param user UserDTO object containing updated user data.
      * @return true if the user was successfully updated, false otherwise.
      */
     public boolean updateUser(UserDTO user) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_SQL)) {
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getUserType().name());
-            preparedStatement.setString(5, user.getLocation());
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_USER_SQL);
+            prepQuery.setString(1, user.getName());
+            prepQuery.setString(2, user.getEmail());
+            prepQuery.setString(3, user.getPassword());
+            prepQuery.setString(4, user.getUserType().name());
+            prepQuery.setString(5, user.getLocation());
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             printSQLException(e);
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     /**
      * Handles SQL exceptions by printing detailed error information.
+     *
      * @param ex SQLException object containing details of the error.
      */
     private void printSQLException(SQLException ex) {

@@ -27,7 +27,7 @@
                 </div>
                 <br>
     
-                <form action="signup" method="post">
+                <form action="signup-URL" method="post">
                     <div class="textfieldSign">
                         <label for="name">Name</label>
                         <input type="text" name="name" id="name" placeholder="Type your name">
