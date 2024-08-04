@@ -19,32 +19,27 @@ public class FoodItemsDTO {
     private int quantity;
     private LocalDate expirationDate;
     private double price;
-    private Timestamp startDate;
-    private Timestamp endDate;
     private String foodPreferences;
 
     public FoodItemsDTO() {}
 
-    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodPreferences) {
+    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate,
+            double price, String foodPreferences) {
         this.userID = userID;
         this.name = name;
         this.quantity = quantity;
         this.expirationDate = expirationDate;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.foodPreferences = foodPreferences;
     }
 
-    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodPreferences) {
+    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences) {
         this.id = id;
         this.userID = userID;
         this.name = name;
         this.quantity = quantity;
         this.expirationDate = expirationDate;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.foodPreferences = foodPreferences;
     }
     
@@ -97,22 +92,6 @@ public class FoodItemsDTO {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public Timestamp getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
     }
 
     public String getFoodPreferences() {

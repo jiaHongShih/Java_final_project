@@ -1,3 +1,16 @@
+<%@page import="dataObjects.FoodItemsDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="dataAccess.FoodItemsDAO"%>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+    <%
+        session = request.getSession();
+        int userId = (Integer) session.getAttribute("userId");
+
+        FoodItemsDAO dao = new FoodItemsDAO();
+        List<FoodItemsDTO> itemsList = dao.getFoodItem(userId);
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,55 +40,88 @@
     <div class="main-content">
         <!-- div to hold all items posted for consumer to buy. -->
         <div class="ItemList">
-
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Expiration Date</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+                for (FoodItemsDTO item : foodItemsList) {
+            %>
+                <tr>
+                    <td><%= item.getName() %></td>
+                    <td><%= item.getQuantity() %></td>
+                    <td><%= item.getExpirationDate() %></td>
+                    <td><%= item.getPrice() %></td>
+                    <td>
+                        <a href="foodItemDetail.jsp?id=<%= item.getId() %>" class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            <%
+                }
+            %>
+        </tbody>
+    </table>
         </div>
     </div>
+    <form action="AddItem-URL" method="post">
+        <div class="shopping-cart-sidebar">
+            <h2>Add An Item</h2>
+            <div class="Add-Item">
 
+                <div class="textfieldSign">
+                    <label for="Name">Name of product:</label>
+                    <input type="text" name="name" id="name" placeholder="Name of product">
+                    <p id="pName"></p>
+                </div>
 
-    <div class="shopping-cart-sidebar">
-        <h2>Add An Item</h2>
-        <div class="Add-Item">
+                <div class="textfieldSign">
+                    <label for="Name">Quantity:</label>
+                    <input type="text" name="name" id="name" placeholder="Quantity">
+                    <p id="Quantity"></p>
+                </div>
 
-            <div id="TOA">
-                <h4>Is this item for?</h4>
-                <label for="">Consumer</label>
-                <input type="radio" name="question" id="">
-                <br>
-                <label for="">Charitable-Organization</label>
-                <input type="radio" name="question" id="">
+                <div class="textfieldSign">
+                    <label for="Name">Expirty Date:</label>
+                    <input type="date" name="name" id="name" placeholder="Date">
+                    <p id="DateOfE"></p>
+                </div>
+
+                <div class="textfieldSign">
+                    <label for="Name">Price:</label>
+                    <input type="text" name="name" id="name" placeholder="Price">
+                    <p id="Price"></p>
+                </div>
+
+                <div class="textfieldSign">
+                    <label for="foodPreference">Select your food preference:</label>
+                    <select id="foodPreference" name="foodPreference">
+                        <option value="fruits">Fruits</option>
+                        <option value="vegetables">Vegetables</option>
+                        <option value="grains">Grains</option>
+                        <option value="dairy">Dairy</option>
+                        <option value="proteins">Proteins</option>
+                        <option value="seafood">Seafood</option>
+                        <option value="snacks">Snacks</option>
+                        <option value="beverages">Beverages</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="condiments">Condiments</option>
+                        <option value="bakedGoods">Baked Goods</option>
+                        <option value="cereals">Cereals</option>
+                        <option value="nutsAndSeeds">Nuts and Seeds</option>
+                        <option value="sauces">Sauces</option>
+                    </select>
+                </div>
             </div>
-            <br>
-
-            <div class="textfieldSign">
-                <label for="Name">Name of product:</label>
-                <input type="text" name="name" id="name" placeholder="Name of product">
-                <p id="pName"></p>
-            </div>
-
-            <div class="textfieldSign">
-                <label for="Name">Quantity:</label>
-                <input type="text" name="name" id="name" placeholder="Quantity">
-                <p id="Quantity"></p>
-            </div>
-
-            <div class="textfieldSign">
-                <label for="Name">Expirty Date:</label>
-                <input type="date" name="name" id="name" placeholder="Date">
-                <p id="DateOfE"></p>
-            </div>
-
-            <div class="textfieldSign">
-                <label for="Name">Price:</label>
-                <input type="text" name="name" id="name" placeholder="Price">
-                <p id="Price"></p>
-            </div>
-
-            
-
-
+            <button type="submit" id="BuyBtn">Add Item</button>
         </div>
-        <button id="BuyBtn">Add Item</button>
-    </div>
+    </form>
 
 </body>
 

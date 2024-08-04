@@ -20,9 +20,9 @@ public class UserQuestionsDAO {
     private static PreparedStatement prepQuery = null;
     private static ResultSet rs = null;
 
-    private static final String INSERT_QUERY = "INSERT INTO user_questions (questionID, email, userID, answer) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_QUERY = "INSERT INTO user_questions (questionID, email, answer) VALUES (?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM user_questions WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE user_questions SET questionID = ?, email = ?, userID = ?, answer = ? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE user_questions SET questionID = ?, email = ?, answer = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM user_questions WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM user_questions";
     private static final String SELECT_BY_EMAIL_QUERY = "SELECT * FROM user_questions WHERE email = ?";
@@ -33,8 +33,7 @@ public class UserQuestionsDAO {
             prepQuery = connection.prepareStatement(INSERT_QUERY);
             prepQuery.setInt(1, userQuestion.getQuestionID());
             prepQuery.setString(2, userQuestion.getEmail());
-            prepQuery.setInt(3, userQuestion.getUserID());
-            prepQuery.setString(4, userQuestion.getAnswer());
+            prepQuery.setString(3, userQuestion.getAnswer());
             prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +58,6 @@ public class UserQuestionsDAO {
                 userQuestion = new UserQuestionsDTO();
                 userQuestion.setQuestionID(rs.getInt("questionID"));
                 userQuestion.setEmail(rs.getString("email"));
-                userQuestion.setUserID(rs.getInt("userID"));
                 userQuestion.setAnswer(rs.getString("answer"));
             }
         } catch (SQLException e) {
@@ -114,7 +112,6 @@ public class UserQuestionsDAO {
                 UserQuestionsDTO userQuestion = new UserQuestionsDTO();
                 userQuestion.setQuestionID(rs.getInt("questionID"));
                 userQuestion.setEmail(rs.getString("email"));
-                userQuestion.setUserID(rs.getInt("userID"));
                 userQuestion.setAnswer(rs.getString("answer"));
                 userQuestion.setId(rs.getInt("id"));
                 userQuestions.add(userQuestion);
@@ -139,9 +136,8 @@ public class UserQuestionsDAO {
             prepQuery = connection.prepareStatement(UPDATE_QUERY);
             prepQuery.setInt(1, userQuestion.getQuestionID());
             prepQuery.setString(2, userQuestion.getEmail());
-            prepQuery.setInt(3, userQuestion.getUserID());
-            prepQuery.setString(4, userQuestion.getAnswer());
-            prepQuery.setInt(5, userQuestion.getId());
+            prepQuery.setString(3, userQuestion.getAnswer());
+            prepQuery.setInt(4, userQuestion.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
