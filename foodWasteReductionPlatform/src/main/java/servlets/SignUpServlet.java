@@ -21,7 +21,9 @@ public class SignUpServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("pass");
         String userTypeParam = request.getParameter("userType");
-        String location = request.getParameter("location");
+        String city = request.getParameter("city");
+        String question = request.getParameter("SecurityQuestion");
+        String answer = request.getParameter("SecurityAnswer");
         response.setContentType("text/html;charset=UTF-8");
 
 
@@ -36,7 +38,11 @@ public class SignUpServlet extends HttpServlet {
             userType = "CHARITABLE_ORGANIZATION";
         }
         // Call BusinessLogic to add the user
-        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
+        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, city);
+        
+        int intQuestion = Integer.parseInt(question);
+        boolean success = BusinessLogic.addUserQuestion(intQuestion, email, answer);
+        
 //
         if (success) {
             // Redirect to the login page or another appropriate page upon successful signup
