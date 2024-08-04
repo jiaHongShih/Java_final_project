@@ -13,24 +13,21 @@ public class UserQuestionsDTO {
     private int id;
     private int questionID;
     private String email;
-    private int userID;
     private String answer;
 
     public UserQuestionsDTO() {
     }
 
-    public UserQuestionsDTO(int id, int questionID, String email, int userID, String answer) {
+    public UserQuestionsDTO(int id, int questionID, String email , String answer) {
         this.id = id;
         this.questionID = questionID;
         this.email = email;
-        this.userID = userID;
         this.answer = answer;
     }
 
-    public UserQuestionsDTO(int questionID, String email, int userID, String answer) {
+    public UserQuestionsDTO(int questionID, String email, String answer) {
         this.questionID = questionID;
         this.email = email;
-        this.userID = userID;
         this.answer = answer;
     }
 
@@ -57,15 +54,7 @@ public class UserQuestionsDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
+    
     public String getAnswer() {
         return answer;
     }

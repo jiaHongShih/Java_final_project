@@ -21,9 +21,10 @@ public class FoodItemsDAO {
     private static PreparedStatement prepQuery = null;
     private static ResultSet rs = null;
 
-    private static final String INSERT_QUERY = "INSERT INTO FoodItems (userID, name, quantity, expirationDate, price, startDate, endDate, foodPreferences) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE FoodItems SET userID = ?, name = ?, quantity = ?, expirationDate = ?, price = ?, startDate = ?, endDate = ?, foodPreferences = ? WHERE id = ?";
+    private static final String INSERT_QUERY = "INSERT INTO FoodItems (userID, name, quantity, expirationDate, price, foodPreferences) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE userID = ?";
+    private static final String SELECT_ONE_QUERY = "SELECT * FROM FoodItems WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE FoodItems SET userID = ?, name = ?, quantity = ?, expirationDate = ?, price = ?, foodPreferences = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM FoodItems WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM FoodItems";
 
@@ -36,9 +37,7 @@ public class FoodItemsDAO {
             prepQuery.setInt(3, foodItem.getQuantity());
             prepQuery.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
             prepQuery.setDouble(5, foodItem.getPrice());
-            prepQuery.setTimestamp(6, foodItem.getStartDate());
-            prepQuery.setTimestamp(7, foodItem.getEndDate());
-            prepQuery.setString(8, foodItem.getFoodPreferences());
+            prepQuery.setString(6, foodItem.getFoodPreferences());
             prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,11 +52,11 @@ public class FoodItemsDAO {
         }
     }
 
-    public FoodItemsDTO getFoodItem(int id) {
+    public FoodItemsDTO getOneFoodItem(int id) {
         FoodItemsDTO foodItem = null;
         try {
             connection = DBConnection.getInstance().getConnection();
-            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery = connection.prepareStatement(SELECT_ONE_QUERY);
             prepQuery.setInt(1, id);
             rs = prepQuery.executeQuery();
 
@@ -69,8 +68,6 @@ public class FoodItemsDAO {
                 foodItem.setQuantity(rs.getInt("quantity"));
                 foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
                 foodItem.setPrice(rs.getDouble("price"));
-                foodItem.setStartDate(rs.getTimestamp("startDate"));
-                foodItem.setEndDate(rs.getTimestamp("endDate"));
                 foodItem.setFoodPreferences(rs.getString("foodPreferences"));
             }
         } catch (SQLException e) {
@@ -89,6 +86,42 @@ public class FoodItemsDAO {
         }
         return foodItem;
     }
+    
+    public List<FoodItemsDTO> getFoodItem(int userID) {
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            if (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
 
     public List<FoodItemsDTO> getAllFoodItems() {
         List<FoodItemsDTO> foodItems = new ArrayList<>();
@@ -105,8 +138,6 @@ public class FoodItemsDAO {
                 foodItem.setQuantity(rs.getInt("quantity"));
                 foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
                 foodItem.setPrice(rs.getDouble("price"));
-                foodItem.setStartDate(rs.getTimestamp("startDate"));
-                foodItem.setEndDate(rs.getTimestamp("endDate"));
                 foodItem.setFoodPreferences(rs.getString("foodPreferences"));
                 foodItems.add(foodItem);
             }
@@ -137,10 +168,8 @@ public class FoodItemsDAO {
             prepQuery.setInt(3, foodItem.getQuantity());
             prepQuery.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
             prepQuery.setDouble(5, foodItem.getPrice());
-            prepQuery.setTimestamp(6, foodItem.getStartDate());
-            prepQuery.setTimestamp(7, foodItem.getEndDate());
-            prepQuery.setString(8, foodItem.getFoodPreferences());
-            prepQuery.setInt(9, foodItem.getId());
+            prepQuery.setString(6, foodItem.getFoodPreferences());
+            prepQuery.setInt(7, foodItem.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {

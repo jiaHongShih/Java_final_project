@@ -25,9 +25,9 @@ CREATE TABLE Questions (
 CREATE TABLE UserQuestions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     questionID INT NOT NULL,
-    userID INT NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     answer VARCHAR(255) NOT NULL,
-    FOREIGN KEY (userID) REFERENCES Users(id),
+    FOREIGN KEY (email) REFERENCES Users(email),
     FOREIGN KEY (questionID) REFERENCES Questions(id)
 );
 
@@ -62,3 +62,7 @@ CREATE TABLE Claims_Perchase (
     FOREIGN KEY (foodItemID) REFERENCES FoodItems(id),
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
+
+INSERT INTO Questions (questionDescription) VALUES ('What Is The Name Of Your First Cousin?');
+INSERT INTO Questions (questionDescription) VALUES ('What Was The Color Of Your First Car?');
+INSERT INTO Questions (questionDescription) VALUES ('What City Were You Born In');
