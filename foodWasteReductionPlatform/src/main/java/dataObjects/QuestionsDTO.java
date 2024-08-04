@@ -9,7 +9,7 @@ package dataObjects;
  * @author Josh Barrett
  */
 public class QuestionsDTO {
-    
+    private int id;
     private String questionDescription;
 
 
@@ -19,5 +19,12 @@ public class QuestionsDTO {
 
     public void setQuestionDescription(String questionDescription) {
         this.questionDescription = questionDescription;
+    }
+        public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

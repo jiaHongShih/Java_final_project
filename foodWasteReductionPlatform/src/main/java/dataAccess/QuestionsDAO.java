@@ -99,6 +99,7 @@ public class QuestionsDAO {
             connection = (Connection) DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(UPDATE_QUERY);
             prepQuery.setString(1, question.getQuestionDescription());
+            prepQuery.setInt(2, question.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {

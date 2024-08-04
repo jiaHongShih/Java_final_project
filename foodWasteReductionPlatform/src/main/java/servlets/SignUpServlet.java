@@ -24,32 +24,26 @@ public class SignUpServlet extends HttpServlet {
         String location = request.getParameter("location");
         response.setContentType("text/html;charset=UTF-8");
 
-        // Get the response writer
-        PrintWriter out = response.getWriter();
 
-        // Generate the HTML content
-        UserDTO user = new UserDTO(name, email, password, userTypeParam, location);
-        UserDAO userDAO = new UserDAO();
-        userDAO.insertUser(user);
-        response.sendRedirect("index.jsp");
+
 //         Determine the user type from the radio button selection
-//        String userType = null;
-//        if ("Consumer".equals(userTypeParam)) {
-//            userType = "CONSUMER";
-//        } else if ("Retailers".equals(userTypeParam)) {
-//            userType = "RETAILER";
-//        } else if ("Charitable Organization".equals(userTypeParam)) {
-//            userType = "CHARITABLE_ORGANIZATION";
-//        }
+        String userType = null;
+        if ("Consumer".equals(userTypeParam)) {
+            userType = "CONSUMER";
+        } else if ("Retailers".equals(userTypeParam)) {
+            userType = "RETAILER";
+        } else if ("Charitable Organization".equals(userTypeParam)) {
+            userType = "CHARITABLE_ORGANIZATION";
+        }
         // Call BusinessLogic to add the user
-//        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
+        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
 //
-//        if (success) {
-//            // Redirect to the login page or another appropriate page upon successful signup
-//            response.sendRedirect("index.jsp");
-//        } else {
-//            // Redirect back to the signup page with an error message
-//            response.sendRedirect("signup.jsp?error=Signup+failed");
-//        }
+        if (success) {
+            // Redirect to the login page or another appropriate page upon successful signup
+            response.sendRedirect("index.jsp");
+        } else {
+            // Redirect back to the signup page with an error message
+            response.sendRedirect("signup.jsp?error=Signup+failed");
+        }
     }
 }
