@@ -8,7 +8,6 @@ import dataAccess.UserDAO;
 import dataAccess.UserQuestionsDAO;
 import dataObjects.UserDTO;
 import dataObjects.UserQuestionsDTO;
-import functions.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,67 +24,55 @@ public class ForgotPasswordServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private UserDAO userDAO;
-    private UserQuestionsDAO userQuestionsDAO;
+    private UserDAO userDAO = new UserDAO();
+    private UserQuestionsDAO userQuestionsDAO = new UserQuestionsDAO();
 
-    public void init() {
-        userDAO = new UserDAO();
-        userQuestionsDAO = new UserQuestionsDAO();
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String newPassword = request.getParameter("Npass");
         String confirmPassword = request.getParameter("cNPass");
-        String securityQuestion = request.getParameter("SQuestionsPick");
         String securityAnswer = request.getParameter("securityAnswer");
 
-//        if (email == null || newPassword == null || confirmPassword == null || securityQuestion == null || securityAnswer == null ||
-//                email.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty() || securityAnswer.isEmpty()) {
-//            request.setAttribute("errorMessage", "All fields are required.");
-//            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-//            return;
-//        }
-//
-//        if (!newPassword.equals(confirmPassword)) {
-//            request.setAttribute("errorMessage", "Passwords do not match.");
-//            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-//            return;
-//        }
+        // Input validation
+        if (newPassword == null || confirmPassword == null || email == null || securityAnswer == null) {
+            request.setAttribute("errorMessage", "All fields are required.");
+            request.getRequestDispatcher("fpass.jsp").forward(request, response);
+            return;
+        }
 
-        try {
-            UserDTO user = userDAO.selectUserByEmail(email);
-            if (user == null) {
-                request.setAttribute("errorMessage", "No user found with the provided email address.");
-                request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-                return;
-            }
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("errorMessage", "Passwords do not match.");
+            request.getRequestDispatcher("fpass.jsp").forward(request, response);
+            return;
+        }
 
-            UserQuestionsDTO userQuestion = userQuestionsDAO.getUserQuestionByEmail(email);
-            if (userQuestion == null || !validateSecurityAnswer(userQuestion, securityQuestion, securityAnswer)) {
-                request.setAttribute("errorMessage", "Invalid security question or answer.");
-                request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-                return;
-            }
+        // Check if the email exists
+        UserDTO user = userDAO.selectUserByEmail(email);
+        if (user == null) {
+            request.setAttribute("errorMessage", "Email not found.");
+            request.getRequestDispatcher("fpass.jsp").forward(request, response);
+            return;
+        }
 
-            user.setPassword(newPassword);
-            boolean isUpdated = userDAO.updateUser(user);
-            if (isUpdated) {
-                response.sendRedirect("index.jsp?successMessage=Password reset successfully.");
-            } else {
-                request.setAttribute("errorMessage", "Failed to reset password. Please try again.");
-                request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            Logger.log("Failed to reset password: " + e.getMessage());
-            request.setAttribute("errorMessage", "An error occurred while resetting your password. Please try again.");
-            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
+        // Retrieve the security question answer
+        UserQuestionsDTO userQuestion = userQuestionsDAO.getUserQuestionByEmail(email);
+        if (userQuestion == null || !userQuestion.getAnswer().equals(securityAnswer)) {
+            request.setAttribute("errorMessage", "Security answer is incorrect.");
+            request.getRequestDispatcher("fpass.jsp").forward(request, response);
+            return;
+        }
+
+        // Update the user's password
+        user.setPassword(newPassword);
+        boolean updated = userDAO.updateUser(user);
+        if (updated) {
+            response.sendRedirect("index.jsp?message=Password+updated+successfully");
+        } else {
+            request.setAttribute("errorMessage", "Password update failed.");
+            request.getRequestDispatcher("fpass.jsp").forward(request, response);
         }
     }
-
-    private boolean validateSecurityAnswer(UserQuestionsDTO userQuestion, String securityQuestion, String securityAnswer) {
-        return userQuestion.getQuestionID() == Integer.parseInt(securityQuestion) &&
-               userQuestion.getAnswer().equalsIgnoreCase(securityAnswer);
-    }
 }
+
