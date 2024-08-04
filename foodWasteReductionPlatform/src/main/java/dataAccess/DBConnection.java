@@ -4,55 +4,60 @@
  */
 package dataAccess;
 
+import functions.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author Nicholas Jacques
- */
 public class DBConnection {
+    private static DBConnection dbInstance;
+    private Connection connection;
 
-    private static DBConnection db;
+    private static final String SERVER_URL = "jdbc:mysql://localhost:3306/foodwaste";
+    private static final String USER = "root";
+    private static final String PASSWORD = "11111111";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    private static Connection connection = null;
-
-    private String serverUrl = "jdbc:mysql://localhost:3306/bookvault";
-    private String userString = "root";
-    private String passwordString = "11111111";
-    private String driverString = "com.mysql.cj.jdbc.Driver";
-
-    //create connection
+    // Private constructor to prevent instantiation
     private DBConnection() {
         try {
-            Class.forName(driverString);
-            this.connection = DriverManager.getConnection(serverUrl, userString, passwordString);
+            Class.forName(DRIVER);
+            this.connection = DriverManager.getConnection(SERVER_URL, USER, PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
+            Logger.log("Failed to create database connection: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            Logger.log("Database driver not found: " + e.getMessage());
         }
     }
 
-    /**
-     * getInstance will return the instance of the DBConnection (only one copy)
-     *
-     * @return DBConnection
-     */
+    // Double-checked locking singleton pattern
     public static DBConnection getInstance() {
-        if (db == null) {
-            db = new DBConnection();
+        if (dbInstance == null) {
+            synchronized (DBConnection.class) {
+                if (dbInstance == null) {
+                    dbInstance = new DBConnection();
+                }
+            }
         }
-        return db;
+        return dbInstance;
     }
 
-    /**
-     * getConnection will return the Connection
-     *
-     * @return Connection
-     */
     public Connection getConnection() {
         return connection;
     }
+
+    // Method to close the connection
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Logger.log("Failed to close database connection: " + e.getMessage());
+            }
+        }
+    }
 }
+

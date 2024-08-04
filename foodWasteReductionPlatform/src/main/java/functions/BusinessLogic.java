@@ -13,29 +13,36 @@ import dataObjects.Claims_PurchaseDTO;
 import dataObjects.FoodItemsDTO;
 import dataObjects.SubscriptionsDTO;
 import dataObjects.UserDTO;
-import dataObjects.UserDTO.UserType;
 import dataObjects.UserQuestionsDTO;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
+
 /**
  *
  * @author JiaHong
  */
-
 public class BusinessLogic {
 
     public static boolean addUser(String name, String email,
-            String password, UserDTO.UserType userType, String location) {
-        if (validUser(name, email, password, userType, location)) {
+            String password, String userType, String location) {
+//        if (validUser(name, email, password, userType, location)) {
             UserDTO user = new UserDTO(name, email, password, userType, location);
             UserDAO userDAO = new UserDAO();
-            userDAO.insertUser(user);
+            int results = userDAO.insertUser(user);
+//            if (results == 0) {
+//                Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
+//
+//            } else {
+//                Logger.log("added" + name + ", email=" + email);
+//
+//            }
             return true;
-        } else {
-            Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
-            return false;
-        }
+//        } else {
+//            Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
+//            return false;
+//        }
+
     }
 
     public static boolean addFoodItem(int userID, String name,
@@ -91,8 +98,8 @@ public class BusinessLogic {
     }
 
     private static boolean isValidClaimsPurchase(int foodItemID, int quantity, int userID, Timestamp claimedAt) {
-        boolean isValid = 
-                isValidFoodItemId(foodItemID)
+        boolean isValid
+                = isValidFoodItemId(foodItemID)
                 && isValidQuantity(quantity)
                 && isValidUserId(userID)
                 && isValidClaimedAt(claimedAt);
@@ -103,8 +110,8 @@ public class BusinessLogic {
     }
 
     private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
-        boolean isValid =
-                isValidUserID(userID)
+        boolean isValid
+                = isValidUserID(userID)
                 && isValidName(name)
                 && isValidQuantity(quantity)
                 && isValidExpirationDate(expirationDate)
@@ -176,7 +183,7 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidUserType(UserType userType) {
+    private static boolean isValidUserType(String userType) {
         boolean isValid = userType != null;
         if (!isValid) {
             Logger.log("Invalid UserType: " + userType);
@@ -192,9 +199,9 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean validUser(String name, String email, String password, UserDTO.UserType userType, String location) {
-        boolean isValid = 
-                isValidName(name)
+    private static boolean validUser(String name, String email, String password, String userType, String location) {
+        boolean isValid
+                = isValidName(name)
                 && isValidEmail(email)
                 && isValidPassword(password)
                 && isValidUserType(userType)
@@ -247,8 +254,8 @@ public class BusinessLogic {
 
     private static boolean isValidSubscription(int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
-        boolean isValid =
-                isValidUserID(userID)
+        boolean isValid
+                = isValidUserID(userID)
                 && isValidPhoneNum(phoneNum)
                 && isValidCommunicationMethod(communicationMethod)
                 && isValidFoodPreferences(foodPreferences);
@@ -294,8 +301,8 @@ public class BusinessLogic {
 
     private static boolean isValidUserQuestion(int questionID, String email,
             int userID, String answer) {
-        boolean isValid = 
-                 isValidQuestionID(questionID)
+        boolean isValid
+                = isValidQuestionID(questionID)
                 && isValidEmail(email)
                 && isValidUserID(userID)
                 && isValidAnswer(answer);

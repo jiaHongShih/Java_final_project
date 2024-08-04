@@ -18,7 +18,7 @@ public class SignUpServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String password = request.getParameter("pass");
-        String userTypeParam = request.getParameter("question");
+        String userTypeParam = request.getParameter("userType");
         String location = request.getParameter("location");
         response.setContentType("text/html;charset=UTF-8");
 
@@ -39,18 +39,18 @@ public class SignUpServlet extends HttpServlet {
         out.println("</html>");
 
         
-        // Determine the user type from the radio button selection
-//        UserDTO.UserType userType = null;
+//         Determine the user type from the radio button selection
+//        String userType = null;
 //        if ("Consumer".equals(userTypeParam)) {
-//            userType = UserDTO.UserType.CONSUMER;
+//            userType = "CONSUMER";
 //        } else if ("Retailers".equals(userTypeParam)) {
-//            userType = UserDTO.UserType.RETAILER;
+//            userType = "RETAILER";
 //        } else if ("Charitable Organization".equals(userTypeParam)) {
-//            userType = UserDTO.UserType.CHARITABLE_ORGANIZATION;
+//            userType = "CHARITABLE_ORGANIZATION";
 //        }
-//        
-//        // Call BusinessLogic to add the user
-//        boolean success = BusinessLogic.addUser(name, email, password, userType, location);
+        
+        // Call BusinessLogic to add the user
+        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
 //
 //        if (success) {
 //            // Redirect to the login page or another appropriate page upon successful signup
