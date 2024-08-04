@@ -28,6 +28,8 @@ public class UserDAO {
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
     private static final String DELETE_USER_SQL = "DELETE FROM users WHERE id = ?";
     private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, email = ?, password = ?, userType = ?, location = ? WHERE id = ?";
+    private static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
+
 
 
     /**
@@ -191,6 +193,47 @@ public class UserDAO {
             }
         }
         return rowUpdated;
+    }
+    
+        /**
+     * Selects a user from the database by email and password.
+     *
+     * @param email The email of the user to be retrieved.
+     * @param password The password of the user to be retrieved.
+     * @return UserDTO object containing user data, or null if not found.
+     */
+    public UserDTO selectUserByEmailAndPassword(String email, String password) {
+        UserDTO user = null;
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_USER_BY_EMAIL_AND_PASSWORD);
+            prepQuery.setString(1, email);
+            prepQuery.setString(2, password);
+            rs = prepQuery.executeQuery();
+
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String userType = rs.getString("userType");
+                String location = rs.getString("location");
+
+                user = new UserDTO();
+                user.setName(name);
+                user.setEmail(email);
+                user.setPassword(password);
+                user.setUserType(userType);
+                user.setLocation(location);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (prepQuery != null) prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("Failed to close resources: " + ex.getMessage());
+            }
+        }
+        return user;
     }
 
     /**
