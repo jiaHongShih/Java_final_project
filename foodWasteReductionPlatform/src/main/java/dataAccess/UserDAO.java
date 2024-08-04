@@ -29,30 +29,43 @@ public class UserDAO {
     private static final String DELETE_USER_SQL = "DELETE FROM users WHERE id = ?";
     private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, email = ?, password = ?, userType = ?, location = ? WHERE id = ?";
 
+
     /**
      * Inserts a new user into the database.
      *
      * @param user UserDTO object containing user data to be inserted.
      */
-    public void insertUser(UserDTO user) {
+    public int insertUser(UserDTO user) {
+        int rowsInserted = 0;
+
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(INSERT_USER_SQL);
             prepQuery.setString(1, user.getName());
             prepQuery.setString(2, user.getEmail());
             prepQuery.setString(3, user.getPassword());
-            prepQuery.setString(4, user.getUserType().name());
+            prepQuery.setString(4, user.getUserType());
             prepQuery.setString(5, user.getLocation());
-            prepQuery.executeUpdate();
+            rowsInserted = prepQuery.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
         } finally {
-            try {
-                prepQuery.close();
-            } catch (SQLException ex) {
-                Logger.log("fail to close");
+            if (prepQuery != null) {
+                try {
+                    prepQuery.close();
+                } catch (SQLException ex) {
+                    Logger.log("Failed to close PreparedStatement: " + ex.getMessage());
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    Logger.log("Failed to close Connection: " + ex.getMessage());
+                }
             }
         }
+        return rowsInserted;
     }
 
     /**
@@ -72,7 +85,7 @@ public class UserDAO {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
-                UserDTO.UserType userType = UserDTO.UserType.valueOf(rs.getString("userType"));
+                String userType = rs.getString("userType");
                 String location = rs.getString("location");
                 user = new UserDTO();
                 user.setName(name);
@@ -110,7 +123,7 @@ public class UserDAO {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
-                UserDTO.UserType userType = UserDTO.UserType.valueOf(rs.getString("userType"));
+                String userType = rs.getString("userType");
                 String location = rs.getString("location");
                 UserDTO user = new UserDTO();
                 user.setName(name);
@@ -172,7 +185,7 @@ public class UserDAO {
             prepQuery.setString(1, user.getName());
             prepQuery.setString(2, user.getEmail());
             prepQuery.setString(3, user.getPassword());
-            prepQuery.setString(4, user.getUserType().name());
+            prepQuery.setString(4, user.getUserType());
             prepQuery.setString(5, user.getLocation());
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {

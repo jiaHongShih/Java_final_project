@@ -12,12 +12,12 @@ public class UserDTO {
     private String name;
     private String email;
     private String password;
-    private UserType userType;
+    private String userType;
     private String location;
 
     public UserDTO(){}
     public UserDTO(String name, String email,
-            String password, UserDTO.UserType userType, String location) {
+            String password, String userType, String location) {
             this.email = email;
             this.location = location;
             this.name = name;
@@ -37,7 +37,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 
@@ -59,7 +59,7 @@ public class UserDTO {
         return password;
     }
 
-    public UserType getUserType() {
+    public String getUserType() {
         return userType;
     }
 
@@ -67,9 +67,4 @@ public class UserDTO {
         return location;
     }
     
-    public enum UserType {
-    RETAILER,
-    CONSUMER,
-    CHARITABLE_ORGANIZATION
-    }
 }

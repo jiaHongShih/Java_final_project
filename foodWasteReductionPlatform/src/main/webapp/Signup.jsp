@@ -15,19 +15,19 @@
                 <br>
                 <br>
 
-                <label for="" id="PickAcc">Please choose a type of account you would like to make.</label>
-
-                <div id="TOA">
-                    <label for="consumer">Consumer</label>
-                    <input type="radio" name="userType" value="Consumer" id="consumer">
-                    <label for="retailers">Retailers</label>
-                    <input type="radio" name="userType" value="Retailers" id="retailers">
-                    <label for="charitable">Charitable Organization</label>
-                    <input type="radio" name="userType" value="Charitable Organization" id="charitable">
-                </div>
-                <br>
     
                 <form action="signup-URL" method="post">
+                    <label for="" id="PickAcc">Please choose a type of account you would like to make.</label>
+
+                    <div id="TOA">
+                        <label for="consumer">Consumer</label>
+                        <input type="radio" name="userType" value="Consumer" id="consumer">
+                        <label for="retailers">Retailers</label>
+                        <input type="radio" name="userType" value="Retailers" id="retailers">
+                        <label for="charitable">Charitable Organization</label>
+                        <input type="radio" name="userType" value="Charitable Organization" id="charitable">
+                    </div>
+                    <br>
                     <div class="textfieldSign">
                         <label for="name">Name</label>
                         <input type="text" name="name" id="name" placeholder="Type your name">
