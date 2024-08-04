@@ -25,7 +25,7 @@
                         <label for="retailers">Retailers</label>
                         <input type="radio" name="userType" value="Retailers" id="retailers">
                         <label for="charitable">Charitable Organization</label>
-                        <input type="radio" name="userType" value="Charitable Organization" id="charitable">
+                        <input type="radio" name="userType" value="Organization" id="charitable">
                     </div>
                     <br>
                     <div class="textfieldSign">

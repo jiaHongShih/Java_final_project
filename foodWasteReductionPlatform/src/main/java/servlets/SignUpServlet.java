@@ -1,5 +1,6 @@
 package servlets;
 
+import dataAccess.UserDAO;
 import dataObjects.UserDTO;
 import functions.BusinessLogic;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SignUpServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -26,19 +28,10 @@ public class SignUpServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // Generate the HTML content
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Registration Details</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>Registration Details</h1>");
-        out.println("<p><strong>Name:</strong> " + name + "</p>");
-        out.println("<p><strong>Email:</strong> " + email + "</p>");
-        out.println("<p><strong>Password:</strong> " + password + "</p>");
-        out.println("</body>");
-        out.println("</html>");
-
-        
+        UserDTO user = new UserDTO(name, email, password, userTypeParam, location);
+        UserDAO userDAO = new UserDAO();
+        userDAO.insertUser(user);
+        response.sendRedirect("index.jsp");
 //         Determine the user type from the radio button selection
 //        String userType = null;
 //        if ("Consumer".equals(userTypeParam)) {
@@ -48,9 +41,8 @@ public class SignUpServlet extends HttpServlet {
 //        } else if ("Charitable Organization".equals(userTypeParam)) {
 //            userType = "CHARITABLE_ORGANIZATION";
 //        }
-        
         // Call BusinessLogic to add the user
-        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
+//        boolean success = BusinessLogic.addUser(name, email, password, userTypeParam, location);
 //
 //        if (success) {
 //            // Redirect to the login page or another appropriate page upon successful signup
