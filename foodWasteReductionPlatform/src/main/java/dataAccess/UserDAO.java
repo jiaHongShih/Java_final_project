@@ -57,13 +57,6 @@ public class UserDAO {
                     Logger.log("Failed to close PreparedStatement: " + ex.getMessage());
                 }
             }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.log("Failed to close Connection: " + ex.getMessage());
-                }
-            }
         }
         return rowsInserted;
     }
