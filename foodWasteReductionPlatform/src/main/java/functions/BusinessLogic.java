@@ -49,7 +49,7 @@ public class BusinessLogic {
             int quantity, LocalDate expirationDate, double price, Timestamp startDate,
             Timestamp endDate, String foodType, String foodPreferences) {
         if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType, foodPreferences)) {
-            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodType, foodPreferences);
+            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodPreferences);
             FoodItemsDAO foodItemsDAO = new FoodItemsDAO();
             foodItemsDAO.addFoodItem(foodItem);
             return true;
