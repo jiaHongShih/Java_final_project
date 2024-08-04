@@ -20,12 +20,12 @@ public class UserQuestionsDAO {
     private static PreparedStatement prepQuery = null;
     private static ResultSet rs = null;
 
-    private static final String INSERT_QUERY = "INSERT INTO user_questions (questionID, email, answer) VALUES (?, ?, ?)";
-    private static final String SELECT_QUERY = "SELECT * FROM user_questions WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE user_questions SET questionID = ?, email = ?, answer = ? WHERE id = ?";
-    private static final String DELETE_QUERY = "DELETE FROM user_questions WHERE id = ?";
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM user_questions";
-    private static final String SELECT_BY_EMAIL_QUERY = "SELECT * FROM user_questions WHERE email = ?";
+    private static final String INSERT_QUERY = "INSERT INTO UserQuestions (questionID, email, answer) VALUES (?, ?, ?)";
+    private static final String SELECT_QUERY = "SELECT * FROM UserQuestions WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE UserQuestions SET questionID = ?, email = ?, answer = ? WHERE id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM UserQuestions WHERE id = ?";
+    private static final String SELECT_ALL_QUERY = "SELECT * FROM UserQuestions";
+    private static final String SELECT_BY_EMAIL_QUERY = "SELECT * FROM UserQuestions WHERE email = ?";
 
     public void addUserQuestion(UserQuestionsDTO userQuestion) {
         try {
@@ -85,7 +85,6 @@ public class UserQuestionsDAO {
                 userQuestion = new UserQuestionsDTO();
                 userQuestion.setQuestionID(rs.getInt("questionID"));
                 userQuestion.setEmail(rs.getString("email"));
-                userQuestion.setUserID(rs.getInt("userID"));
                 userQuestion.setAnswer(rs.getString("answer"));
             }
         } catch (SQLException e) {

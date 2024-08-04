@@ -2,11 +2,15 @@
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     <!-- Servlet Definition -->
     <servlet>
+        <servlet-name>SignUpServlet</servlet-name>
+        <servlet-class>servlets.SignUpServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <servlet-name>ForgotPasswordServlet-NAME</servlet-name>
         <servlet-class>servlets.ForgotPasswordServlet</servlet-class>
     </servlet>
     <servlet>
@@ -26,9 +30,8 @@
         <servlet-name>UpdateFoodItemServlet-NAME</servlet-name>
         <url-pattern>/UpdateFoodItemServlet-URL</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
-        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <servlet-name>ForgotPasswordServlet-NAME</servlet-name>
         <url-pattern>/ForgotPasswordServlet-URL</url-pattern>
     </servlet-mapping>
     

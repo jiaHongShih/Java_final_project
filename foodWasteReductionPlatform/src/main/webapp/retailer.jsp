@@ -52,7 +52,7 @@
         </thead>
         <tbody>
             <%
-                for (FoodItemsDTO item : foodItemsList) {
+                for (FoodItemsDTO item : itemsList) {
             %>
                 <tr>
                     <td><%= item.getName() %></td>
