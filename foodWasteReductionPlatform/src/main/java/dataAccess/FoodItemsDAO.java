@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.FoodItemsDTO;
+import functions.Logger;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public class FoodItemsDAO {
 
-    private static final String URL = "jdbc:your_database_url";
-    private static final String USER = "your_database_user";
-    private static final String PASSWORD = "your_database_password";
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO food_items (userID, name, quantity, ExpirationDate, price, startDate, endDate, foodType) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM food_items WHERE id = ?";
@@ -27,28 +28,36 @@ public class FoodItemsDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM food_items";
 
     public void addFoodItem(FoodItemsDTO foodItem) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setInt(1, foodItem.getUserID());
-            preparedStatement.setString(2, foodItem.getName());
-            preparedStatement.setInt(3, foodItem.getQuantity());
-            preparedStatement.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
-            preparedStatement.setDouble(5, foodItem.getPrice());
-            preparedStatement.setTimestamp(6, foodItem.getStartDate());
-            preparedStatement.setTimestamp(7, foodItem.getEndDate());
-            preparedStatement.setString(8, foodItem.getFoodType());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_QUERY);
+            prepQuery.setInt(1, foodItem.getUserID());
+            prepQuery.setString(2, foodItem.getName());
+            prepQuery.setInt(3, foodItem.getQuantity());
+            prepQuery.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
+            prepQuery.setDouble(5, foodItem.getPrice());
+            prepQuery.setTimestamp(6, foodItem.getStartDate());
+            prepQuery.setTimestamp(7, foodItem.getEndDate());
+            prepQuery.setString(8, foodItem.getFoodType());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     public FoodItemsDTO getFoodItem(int id) {
         FoodItemsDTO foodItem = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
 
             if (rs.next()) {
                 foodItem = new FoodItemsDTO();
@@ -63,15 +72,23 @@ public class FoodItemsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return foodItem;
     }
 
     public List<FoodItemsDTO> getAllFoodItems() {
         List<FoodItemsDTO> foodItems = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            rs = prepQuery.executeQuery();
 
             while (rs.next()) {
                 FoodItemsDTO foodItem = new FoodItemsDTO();
@@ -87,38 +104,59 @@ public class FoodItemsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return foodItems;
     }
 
     public boolean updateFoodItem(FoodItemsDTO foodItem) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setInt(1, foodItem.getUserID());
-            preparedStatement.setString(2, foodItem.getName());
-            preparedStatement.setInt(3, foodItem.getQuantity());
-            preparedStatement.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
-            preparedStatement.setDouble(5, foodItem.getPrice());
-            preparedStatement.setTimestamp(6, foodItem.getStartDate());
-            preparedStatement.setTimestamp(7, foodItem.getEndDate());
-            preparedStatement.setString(8, foodItem.getFoodType());
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_QUERY);
+            prepQuery.setInt(1, foodItem.getUserID());
+            prepQuery.setString(2, foodItem.getName());
+            prepQuery.setInt(3, foodItem.getQuantity());
+            prepQuery.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
+            prepQuery.setDouble(5, foodItem.getPrice());
+            prepQuery.setTimestamp(6, foodItem.getStartDate());
+            prepQuery.setTimestamp(7, foodItem.getEndDate());
+            prepQuery.setString(8, foodItem.getFoodType());
 
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     public boolean deleteFoodItem(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_QUERY);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }

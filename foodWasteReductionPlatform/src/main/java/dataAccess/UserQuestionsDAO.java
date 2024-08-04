@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.UserQuestionsDTO;
+import functions.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class UserQuestionsDAO {
 
-    private static final String URL = "jdbc:your_database_url";
-    private static final String USER = "your_database_user";
-    private static final String PASSWORD = "your_database_password";
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO user_questions (questionID, email, userID, answer) VALUES (?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM user_questions WHERE id = ?";
@@ -26,24 +27,32 @@ public class UserQuestionsDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM user_questions";
 
     public void addUserQuestion(UserQuestionsDTO userQuestion) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setInt(1, userQuestion.getQuestionID());
-            preparedStatement.setString(2, userQuestion.getEmail());
-            preparedStatement.setInt(3, userQuestion.getUserID());
-            preparedStatement.setString(4, userQuestion.getAnswer());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_QUERY);
+            prepQuery.setInt(1, userQuestion.getQuestionID());
+            prepQuery.setString(2, userQuestion.getEmail());
+            prepQuery.setInt(3, userQuestion.getUserID());
+            prepQuery.setString(4, userQuestion.getAnswer());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     public UserQuestionsDTO getUserQuestion(int id) {
         UserQuestionsDTO userQuestion = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
 
             if (rs.next()) {
                 userQuestion = new UserQuestionsDTO();
@@ -54,15 +63,23 @@ public class UserQuestionsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return userQuestion;
     }
 
     public List<UserQuestionsDTO> getAllUserQuestions() {
         List<UserQuestionsDTO> userQuestions = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            rs = prepQuery.executeQuery();
 
             while (rs.next()) {
                 UserQuestionsDTO userQuestion = new UserQuestionsDTO();
@@ -74,34 +91,55 @@ public class UserQuestionsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return userQuestions;
     }
 
     public boolean updateUserQuestion(UserQuestionsDTO userQuestion) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setInt(1, userQuestion.getQuestionID());
-            preparedStatement.setString(2, userQuestion.getEmail());
-            preparedStatement.setInt(3, userQuestion.getUserID());
-            preparedStatement.setString(4, userQuestion.getAnswer());
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_QUERY);
+            prepQuery.setInt(1, userQuestion.getQuestionID());
+            prepQuery.setString(2, userQuestion.getEmail());
+            prepQuery.setInt(3, userQuestion.getUserID());
+            prepQuery.setString(4, userQuestion.getAnswer());
 
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     public boolean deleteUserQuestion(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_QUERY);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }

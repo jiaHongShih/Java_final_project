@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.SubscriptionsDTO;
+import functions.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class SubscriptionsDAO {
 
-    private static final String URL = "jdbc:your_database_url";
-    private static final String USER = "your_database_user";
-    private static final String PASSWORD = "your_database_password";
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO subscriptions (userID, phoneNum, CommunicationMethod, foodPreferences) VALUES (?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM subscriptions WHERE id = ?";
@@ -26,24 +27,32 @@ public class SubscriptionsDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM subscriptions";
 
     public void addSubscription(SubscriptionsDTO subscription) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setInt(1, subscription.getUserID());
-            preparedStatement.setString(2, subscription.getPhoneNum());
-            preparedStatement.setString(3, subscription.getCommunicationMethod());
-            preparedStatement.setString(4, subscription.getFoodPreferences());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_QUERY);
+            prepQuery.setInt(1, subscription.getUserID());
+            prepQuery.setString(2, subscription.getPhoneNum());
+            prepQuery.setString(3, subscription.getCommunicationMethod());
+            prepQuery.setString(4, subscription.getFoodPreferences());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     public SubscriptionsDTO getSubscription(int id) {
         SubscriptionsDTO subscription = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
 
             if (rs.next()) {
                 subscription = new SubscriptionsDTO();
@@ -54,15 +63,23 @@ public class SubscriptionsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return subscription;
     }
 
     public List<SubscriptionsDTO> getAllSubscriptions() {
         List<SubscriptionsDTO> subscriptions = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            rs = prepQuery.executeQuery();
 
             while (rs.next()) {
                 SubscriptionsDTO subscription = new SubscriptionsDTO();
@@ -74,34 +91,55 @@ public class SubscriptionsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return subscriptions;
     }
 
     public boolean updateSubscription(SubscriptionsDTO subscription) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setInt(1, subscription.getUserID());
-            preparedStatement.setString(2, subscription.getPhoneNum());
-            preparedStatement.setString(3, subscription.getCommunicationMethod());
-            preparedStatement.setString(4, subscription.getFoodPreferences());
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_QUERY);
+            prepQuery.setInt(1, subscription.getUserID());
+            prepQuery.setString(2, subscription.getPhoneNum());
+            prepQuery.setString(3, subscription.getCommunicationMethod());
+            prepQuery.setString(4, subscription.getFoodPreferences());
 
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     public boolean deleteSubscription(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_QUERY);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }

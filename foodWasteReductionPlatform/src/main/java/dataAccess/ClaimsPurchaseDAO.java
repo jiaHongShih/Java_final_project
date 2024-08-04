@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.Claims_PurchaseDTO;
+import functions.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class ClaimsPurchaseDAO {
 
-    private static final String URL = "jdbc:your_database_url";
-    private static final String USER = "your_database_user";
-    private static final String PASSWORD = "your_database_password";
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO claims_purchase (foodItemID, quantity, userID, claimedAt) VALUES (?, ?, ?, ?)";
     private static final String SELECT_QUERY = "SELECT * FROM claims_purchase WHERE id = ?";
@@ -26,24 +27,32 @@ public class ClaimsPurchaseDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM claims_purchase";
 
     public void addClaim(Claims_PurchaseDTO claim) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setInt(1, claim.getFoodItemID());
-            preparedStatement.setInt(2, claim.getQuantity());
-            preparedStatement.setInt(3, claim.getUserID());
-            preparedStatement.setTimestamp(4, claim.getClaimedAt());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_QUERY);
+            prepQuery.setInt(1, claim.getFoodItemID());
+            prepQuery.setInt(2, claim.getQuantity());
+            prepQuery.setInt(3, claim.getUserID());
+            prepQuery.setTimestamp(4, claim.getClaimedAt());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     public Claims_PurchaseDTO getClaim(int id) {
         Claims_PurchaseDTO claim = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
 
             if (rs.next()) {
                 claim = new Claims_PurchaseDTO();
@@ -54,15 +63,24 @@ public class ClaimsPurchaseDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return claim;
     }
 
     public List<Claims_PurchaseDTO> getAllClaims() {
         List<Claims_PurchaseDTO> claims = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            rs = prepQuery.executeQuery();
 
             while (rs.next()) {
                 Claims_PurchaseDTO claim = new Claims_PurchaseDTO();
@@ -74,34 +92,55 @@ public class ClaimsPurchaseDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return claims;
     }
 
     public boolean updateClaim(Claims_PurchaseDTO claim) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setInt(1, claim.getFoodItemID());
-            preparedStatement.setInt(2, claim.getQuantity());
-            preparedStatement.setInt(3, claim.getUserID());
-            preparedStatement.setTimestamp(4, claim.getClaimedAt());
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_QUERY);
+            prepQuery.setInt(1, claim.getFoodItemID());
+            prepQuery.setInt(2, claim.getQuantity());
+            prepQuery.setInt(3, claim.getUserID());
+            prepQuery.setTimestamp(4, claim.getClaimedAt());
 
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     public boolean deleteClaim(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_QUERY);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }
