@@ -88,6 +88,7 @@ public class ClaimsPurchaseDAO {
                 claim.setQuantity(rs.getInt("quantity"));
                 claim.setUserID(rs.getInt("userID"));
                 claim.setClaimedAt(rs.getTimestamp("claimedAt"));
+                claim.setId(rs.getInt("id"));
                 claims.add(claim);
             }
         } catch (SQLException e) {
@@ -112,6 +113,7 @@ public class ClaimsPurchaseDAO {
             prepQuery.setInt(2, claim.getQuantity());
             prepQuery.setInt(3, claim.getUserID());
             prepQuery.setTimestamp(4, claim.getClaimedAt());
+            prepQuery.setInt(5, claim.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {

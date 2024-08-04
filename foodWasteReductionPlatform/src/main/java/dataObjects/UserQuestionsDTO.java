@@ -10,12 +10,21 @@ package dataObjects;
  */
 public class UserQuestionsDTO {
 
+    private int id;
     private int questionID;
     private String email;
     private int userID;
     private String answer;
 
     public UserQuestionsDTO() {
+    }
+
+    public UserQuestionsDTO(int id, int questionID, String email, int userID, String answer) {
+        this.id = id;
+        this.questionID = questionID;
+        this.email = email;
+        this.userID = userID;
+        this.answer = answer;
     }
 
     public UserQuestionsDTO(int questionID, String email, int userID, String answer) {
@@ -25,6 +34,13 @@ public class UserQuestionsDTO {
         this.answer = answer;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public int getQuestionID() {
         return questionID;

@@ -9,6 +9,7 @@ package dataObjects;
  * @author JiaHong
  */
 public class UserDTO {
+    private int id;
     private String name;
     private String email;
     private String password;
@@ -24,6 +25,16 @@ public class UserDTO {
             this.password = password;
             this.userType = userType;
     }
+
+    public UserDTO(int id, String name, String email, String password, String userType, String location) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.location = location;
+    }
+    
 
     public void setName(String name) {
         this.name = name;
@@ -45,7 +56,13 @@ public class UserDTO {
         this.location = location;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public int getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

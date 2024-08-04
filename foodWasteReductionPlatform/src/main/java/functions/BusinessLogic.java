@@ -26,30 +26,30 @@ public class BusinessLogic {
 
     public static boolean addUser(String name, String email,
             String password, String userType, String location) {
-//        if (validUser(name, email, password, userType, location)) {
+        if (validUser(name, email, password, userType, location)) {
             UserDTO user = new UserDTO(name, email, password, userType, location);
             UserDAO userDAO = new UserDAO();
             int results = userDAO.insertUser(user);
-//            if (results == 0) {
-//                Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
-//
-//            } else {
-//                Logger.log("added" + name + ", email=" + email);
-//
-//            }
+            if (results == 0) {
+                Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
+
+            } else {
+                Logger.log("added" + name + ", email=" + email);
+
+            }
             return true;
-//        } else {
-//            Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
-//            return false;
-//        }
+        } else {
+            Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
+            return false;
+        }
 
     }
 
     public static boolean addFoodItem(int userID, String name,
             int quantity, LocalDate expirationDate, double price, Timestamp startDate,
-            Timestamp endDate, String foodType) {
-        if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType)) {
-            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodType);
+            Timestamp endDate, String foodType, String foodPreferences) {
+        if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType, foodPreferences)) {
+            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodType, foodPreferences);
             FoodItemsDAO foodItemsDAO = new FoodItemsDAO();
             foodItemsDAO.addFoodItem(foodItem);
             return true;
@@ -109,7 +109,7 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
+    private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType, String foodPreferences) {
         boolean isValid
                 = isValidUserID(userID)
                 && isValidName(name)

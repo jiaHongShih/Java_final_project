@@ -40,6 +40,7 @@ CREATE TABLE FoodItems (
     price DECIMAL(10, 2),
     startDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     endDate TIMESTAMP,
+    foodPreferences VARCHAR(255),
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
 
@@ -47,7 +48,7 @@ CREATE TABLE Subscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     userID INT NOT NULL,
     phoneNum VARCHAR(255),
-    communicationMethod ENUM('email', 'phone') NOT NULL,
+    communicationMethod VARCHAR(255) NOT NULL,
     foodPreferences VARCHAR(255),
     FOREIGN KEY (userID) REFERENCES Users(id)
 );

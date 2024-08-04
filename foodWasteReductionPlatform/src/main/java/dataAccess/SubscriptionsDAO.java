@@ -60,6 +60,7 @@ public class SubscriptionsDAO {
                 subscription.setPhoneNum(rs.getString("phoneNum"));
                 subscription.setCommunicationMethod(rs.getString("CommunicationMethod"));
                 subscription.setFoodPreferences(rs.getString("foodPreferences"));
+                subscription.setId(rs.getInt("id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,6 +88,7 @@ public class SubscriptionsDAO {
                 subscription.setPhoneNum(rs.getString("phoneNum"));
                 subscription.setCommunicationMethod(rs.getString("CommunicationMethod"));
                 subscription.setFoodPreferences(rs.getString("foodPreferences"));
+                subscription.setId(rs.getInt("id"));
                 subscriptions.add(subscription);
             }
         } catch (SQLException e) {
@@ -111,6 +113,7 @@ public class SubscriptionsDAO {
             prepQuery.setString(2, subscription.getPhoneNum());
             prepQuery.setString(3, subscription.getCommunicationMethod());
             prepQuery.setString(4, subscription.getFoodPreferences());
+            prepQuery.setInt(5, subscription.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {

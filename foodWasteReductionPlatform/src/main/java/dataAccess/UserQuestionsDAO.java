@@ -87,6 +87,7 @@ public class UserQuestionsDAO {
                 userQuestion.setEmail(rs.getString("email"));
                 userQuestion.setUserID(rs.getInt("userID"));
                 userQuestion.setAnswer(rs.getString("answer"));
+                userQuestion.setId(rs.getInt("id"));
                 userQuestions.add(userQuestion);
             }
         } catch (SQLException e) {
@@ -111,6 +112,7 @@ public class UserQuestionsDAO {
             prepQuery.setString(2, userQuestion.getEmail());
             prepQuery.setInt(3, userQuestion.getUserID());
             prepQuery.setString(4, userQuestion.getAnswer());
+            prepQuery.setInt(5, userQuestion.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
