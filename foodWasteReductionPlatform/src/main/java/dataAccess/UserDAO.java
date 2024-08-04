@@ -64,43 +64,40 @@ public class UserDAO {
     }
 
     /**
-     * Selects a user from the database by ID.
+     * Selects a user from the database by email.
      *
-     * @param id The ID of the user to be retrieved.
+     * @param email The email of the user to be retrieved.
      * @return UserDTO object containing user data, or null if not found.
      */
-    public UserDTO selectUser(int id) {
+    public UserDTO selectUserByEmail(String email) {
         UserDTO user = null;
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
-            prepQuery = connection.prepareStatement(SELECT_USER_BY_ID);
-            prepQuery.setInt(1, id);
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
+            prepQuery.setString(1, email);
             rs = prepQuery.executeQuery();
+
             if (rs.next()) {
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                String userType = rs.getString("userType");
-                String location = rs.getString("location");
                 user = new UserDTO();
-                user.setName(name);
-                user.setEmail(email);
-                user.setPassword(password);
-                user.setUserType(userType);
-                user.setLocation(location);
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setUserType(rs.getString("userType"));
+                user.setLocation(rs.getString("location"));
             }
         } catch (SQLException e) {
             printSQLException(e);
         } finally {
             try {
-                rs.close();
-                prepQuery.close();
+                if (rs != null) rs.close();
+                if (prepQuery != null) prepQuery.close();
             } catch (SQLException ex) {
-                Logger.log("fail to close");
+                Logger.log("Failed to close resources: " + ex.getMessage());
             }
         }
         return user;
     }
+
 
     /**
      * Retrieves all users from the database.
