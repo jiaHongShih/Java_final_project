@@ -25,10 +25,11 @@ public class UserQuestionsDAO {
     private static final String UPDATE_QUERY = "UPDATE user_questions SET questionID = ?, email = ?, userID = ?, answer = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM user_questions WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM user_questions";
+    private static final String SELECT_BY_EMAIL_QUERY = "SELECT * FROM user_questions WHERE email = ?";
 
     public void addUserQuestion(UserQuestionsDTO userQuestion) {
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(INSERT_QUERY);
             prepQuery.setInt(1, userQuestion.getQuestionID());
             prepQuery.setString(2, userQuestion.getEmail());
@@ -49,9 +50,37 @@ public class UserQuestionsDAO {
     public UserQuestionsDTO getUserQuestion(int id) {
         UserQuestionsDTO userQuestion = null;
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(SELECT_QUERY);
             prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
+
+            if (rs.next()) {
+                userQuestion = new UserQuestionsDTO();
+                userQuestion.setQuestionID(rs.getInt("questionID"));
+                userQuestion.setEmail(rs.getString("email"));
+                userQuestion.setUserID(rs.getInt("userID"));
+                userQuestion.setAnswer(rs.getString("answer"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
+        }
+        return userQuestion;
+    }
+
+    public UserQuestionsDTO getUserQuestionByEmail(String email) {
+        UserQuestionsDTO userQuestion = null;
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_BY_EMAIL_QUERY);
+            prepQuery.setString(1, email);
             rs = prepQuery.executeQuery();
 
             if (rs.next()) {
@@ -77,7 +106,7 @@ public class UserQuestionsDAO {
     public List<UserQuestionsDTO> getAllUserQuestions() {
         List<UserQuestionsDTO> userQuestions = new ArrayList<>();
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
             rs = prepQuery.executeQuery();
 
@@ -106,7 +135,7 @@ public class UserQuestionsDAO {
     public boolean updateUserQuestion(UserQuestionsDTO userQuestion) {
         boolean rowUpdated = false;
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(UPDATE_QUERY);
             prepQuery.setInt(1, userQuestion.getQuestionID());
             prepQuery.setString(2, userQuestion.getEmail());
@@ -130,7 +159,7 @@ public class UserQuestionsDAO {
     public boolean deleteUserQuestion(int id) {
         boolean rowDeleted = false;
         try {
-            connection = (Connection) DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnection();
             prepQuery = connection.prepareStatement(DELETE_QUERY);
             prepQuery.setInt(1, id);
             rowDeleted = prepQuery.executeUpdate() > 0;
@@ -146,3 +175,4 @@ public class UserQuestionsDAO {
         return rowDeleted;
     }
 }
+
