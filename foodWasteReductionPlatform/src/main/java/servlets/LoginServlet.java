@@ -6,10 +6,8 @@ package servlets;
 
 import dataAccess.UserDAO;
 import dataObjects.UserDTO;
-import functions.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,9 +35,9 @@ public class LoginServlet extends HttpServlet {
         UserDTO user = userDAO.selectUserByEmailAndPassword(email, password);
 
         if (user != null) {
+            user = userDAO.selectUserByEmail(email);
+            request.getSession().setAttribute("userId", user.getId());
             String userType = user.getUserType();
-            request.getSession().setAttribute("user", user);
-
             switch (userType) {
                 case "Consumer":
                     response.sendRedirect("Consumer.jsp");

@@ -5,11 +5,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
     <%
-        session = request.getSession();
-        int userId = (Integer) session.getAttribute("userId");
-
-        FoodItemsDAO dao = new FoodItemsDAO();
-        List<FoodItemsDTO> itemsList = dao.getFoodItem(userId);
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        if (userId != null) {
+            int id = userId;
+        }else{
+        
+        }
+    FoodItemsDAO dao = new FoodItemsDAO();
+    List<FoodItemsDTO> itemsList = dao.getFoodItem(userId);
     %>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +73,7 @@
     </table>
         </div>
     </div>
-    <form action="AddItem-URL" method="post">
+    <form action="AddItemServlet-URL" method="post">
         <div class="shopping-cart-sidebar">
             <h2>Add An Item</h2>
             <div class="Add-Item">
@@ -82,20 +85,20 @@
                 </div>
 
                 <div class="textfieldSign">
-                    <label for="Name">Quantity:</label>
-                    <input type="text" name="name" id="name" placeholder="Quantity">
+                    <label for="quantity">Quantity:</label>
+                    <input type="text" name="quantity" id="quantity" placeholder="Quantity">
                     <p id="Quantity"></p>
                 </div>
 
                 <div class="textfieldSign">
-                    <label for="Name">Expirty Date:</label>
-                    <input type="date" name="name" id="name" placeholder="Date">
+                    <label for="expirationDate">Expirty Date:</label>
+                    <input type="date" name="expirationDate" id="expirationDate" placeholder="Date">
                     <p id="DateOfE"></p>
                 </div>
 
                 <div class="textfieldSign">
-                    <label for="Name">Price:</label>
-                    <input type="text" name="name" id="name" placeholder="Price">
+                    <label for="price">Price:</label>
+                    <input type="text" name="price" id="price" placeholder="Price">
                     <p id="Price"></p>
                 </div>
 
