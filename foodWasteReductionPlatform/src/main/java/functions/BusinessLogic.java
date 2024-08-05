@@ -31,6 +31,38 @@ import java.util.regex.Pattern;
  */
 public class BusinessLogic {
 
+    public static boolean claimItem(int quanity, int itemID) {
+        boolean isUpdated = false;
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        String QUERY_STRING = "UPDATE FoodItems"
+                + " SET quantity = quantity - ?"
+                + " WHERE id = ?;";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(QUERY_STRING);
+            prepQuery.setInt(1, quanity);
+            prepQuery.setInt(2, itemID);
+            int affectedRows = prepQuery.executeUpdate();
+            if (affectedRows > 0) {
+            isUpdated = true; // Update was successful
+        }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return isUpdated;
+    }
+
     public static List<FoodItemsDTO> listForLocation(int userID) {
         Connection connection = null;
         PreparedStatement prepQuery = null;

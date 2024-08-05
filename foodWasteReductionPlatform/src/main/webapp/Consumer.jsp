@@ -78,7 +78,7 @@
                     <td><%= item.getExpirationDate() %></td>
                     <td><%= item.getPrice() %></td>
                     <td>
-                        <a href="foodItemDetail.jsp?id=<%= item.getId() %>" class="btn btn-primary">Edit</a>
+                        <a href="foodItemDetailForCus.jsp?id=<%= item.getId() %>" class="btn btn-primary">Buy</a>
                     </td>
                 </tr>
             <%
