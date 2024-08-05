@@ -15,7 +15,7 @@ public class DBConnection {
 
     private static final String SERVER_URL = "jdbc:mysql://localhost:3306/foodwaste";
     private static final String USER = "root";
-    private static final String PASSWORD = "11111111";
+    private static final String PASSWORD = "";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     // Private constructor to prevent instantiation
