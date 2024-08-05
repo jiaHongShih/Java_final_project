@@ -9,7 +9,7 @@
         if (userId != null) {
             int id = userId;
         }else{
-        
+            response.sendRedirect("index.jsp");
         }
     FoodItemsDAO dao = new FoodItemsDAO();
     List<FoodItemsDTO> itemsList = dao.getFoodItem(userId);
@@ -37,7 +37,7 @@
     <header>
         <img src="./Photos/LogoNoBG.png" alt="Logo" class="TopLogo">
         <h3 class="pTitle">Retailer</h3>
-        <a href="index.html"><button id="LogOutBTN">LogOut</button></a>
+        <a href="index.jsp"><button id="LogOutBTN">LogOut</button></a>
     </header>
 
     <div class="main-content">

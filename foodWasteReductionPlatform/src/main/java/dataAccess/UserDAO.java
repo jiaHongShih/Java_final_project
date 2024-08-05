@@ -180,6 +180,7 @@ public class UserDAO {
             prepQuery.setString(3, user.getPassword());
             prepQuery.setString(4, user.getUserType());
             prepQuery.setString(5, user.getLocation());
+            prepQuery.setInt(6, user.getId());
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             printSQLException(e);
