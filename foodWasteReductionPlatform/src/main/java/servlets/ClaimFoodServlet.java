@@ -39,7 +39,14 @@ public class ClaimFoodServlet extends HttpServlet {
 
         boolean isUpdated = BusinessLogic.claimItem(quantity, id);
         if (isUpdated) {
-            response.sendRedirect("Consumer.jsp");
+            String sourcePage = request.getParameter("sourcePage");
+
+            if ("consumer.jsp".equals(sourcePage)) {
+                response.sendRedirect("consumer.jsp");
+            } else if ("cOrg.jsp".equals(sourcePage)) {
+                response.sendRedirect("cOrg.jsp");
+            }
+      
         } else {
             response.getWriter().println("Error updating the food item.");
         }
