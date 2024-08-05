@@ -1,3 +1,4 @@
+<%@page import="functions.BusinessLogic"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="dataObjects.FoodItemsDTO"%>
 <%@page import="java.util.List"%>
@@ -11,8 +12,7 @@
         response.sendRedirect("index.jsp");
     }
     
-    FoodItemsDAO dao = new FoodItemsDAO();
-    List<FoodItemsDTO> itemsList = dao.getFoodItem(userId);
+    List<FoodItemsDTO> itemsList = BusinessLogic.listForLocation(userId);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +37,7 @@
             padding: 10px;
             position: absolute;
             right: 10px;
-            top: 50px;
+            top: 100px;
             width: 300px;
             z-index: 100;
         }

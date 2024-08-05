@@ -28,6 +28,7 @@ public class FoodItemsDAO {
     private static final String DELETE_QUERY = "DELETE FROM FoodItems WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM FoodItems";
 
+
     public void addFoodItem(FoodItemsDTO foodItem) {
         try {
             connection = DBConnection.getInstance().getConnection();

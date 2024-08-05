@@ -40,7 +40,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SubscriptionServlet-NAME</servlet-name>
-        <servlet-class>/SubscriptionServlet-URL</servlet-class>
+        <url-pattern>/SubscriptionServlet-URL</url-pattern>
     </servlet-mapping>
     
     
