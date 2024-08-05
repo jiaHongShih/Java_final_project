@@ -17,11 +17,15 @@
         <servlet-name>UpdateFoodItemServlet-NAME</servlet-name>
         <servlet-class>servlets.UpdateFoodItemServlet</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>SubscriptionServlet-NAME</servlet-name>
+        <servlet-class>servlets.SubscriptionServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup-URL</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/loginServlet-URL</url-pattern>
@@ -34,6 +38,11 @@
         <servlet-name>ForgotPasswordServlet-NAME</servlet-name>
         <url-pattern>/ForgotPasswordServlet-URL</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubscriptionServlet-NAME</servlet-name>
+        <servlet-class>/SubscriptionServlet-URL</servlet-class>
+    </servlet-mapping>
+    
     
     <session-config>
         <session-timeout>
