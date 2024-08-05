@@ -1,3 +1,4 @@
+<%@page import="dataObjects.SubscriptionsDTO"%>
 <%@page import="functions.BusinessLogic"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="dataObjects.FoodItemsDTO"%>
@@ -13,6 +14,9 @@
     }
     
     List<FoodItemsDTO> itemsList = BusinessLogic.listForLocation(userId);
+    List<FoodItemsDTO> itemsListSus = BusinessLogic.listForPref(userId);
+    List<SubscriptionsDTO> suBList = BusinessLogic.listForSub(userId);
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +70,7 @@
     <header>
         <img src="./Photos/LogoNoBG.png" alt="Logo" class="TopLogo">
         <h3 class="pTitle">Consumer</h3>
-        <a href="index.html"><button id="LogOutBTN">LogOut</button></a>
+        <a href="index.jsp"><button id="LogOutBTN">LogOut</button></a>
     </header>
 
     <div class="main-content">
@@ -92,7 +96,7 @@
                     <td><%= item.getExpirationDate() %></td>
                     <td><%= item.getPrice() %></td>
                     <td>
-                        <a href="foodItemDetailForCus.jsp?id=<%= item.getId() %>" class="btn btn-primary">Buy</a>
+                        <a href="foodItemDetailForCus.jsp?id=<%= item.getId() %>" class="btn btn-primary">Purchase</a>
                     </td>
                 </tr>
             <%
@@ -121,7 +125,7 @@
         </thead>
         <tbody>
             <%
-                for (FoodItemsDTO item : itemsList) {
+                for (FoodItemsDTO item : itemsListSus) {
             %>
                 <tr>
                     <td><%= item.getName() %></td>
@@ -129,7 +133,7 @@
                     <td><%= item.getExpirationDate() %></td>
                     <td><%= item.getPrice() %></td>
                     <td>
-                        <a href="foodItemDetail.jsp?id=<%= item.getId() %>" class="btn btn-primary">Edit</a>
+                        <a href="foodItemDetailForCus.jsp?id=<%= item.getId() %>" class="btn btn-primary">Purchase</a>
                     </td>
                 </tr>
             <%
@@ -184,6 +188,20 @@
 
         <button type="submit" class="btn btn-primary">Subscribe</button>
     </form>
+        <div>
+            <% 
+                for (SubscriptionsDTO sub : suBList) {
+            %>
+                <tr>
+                    <td><%= sub.getFoodPreferences()%></td>
+                    <td>
+                        <a href="DeleteSubscriptionServlet-URL?id=<%= sub.getId() %>" class="btn btn-primary">Delete</a>
+                    </td>
+                </tr>
+            <%
+                }
+            %>
+        </div>
     </div>
 
     <script>

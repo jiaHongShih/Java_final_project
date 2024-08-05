@@ -25,6 +25,10 @@
         <servlet-name>ClaimFoodServlet-NAME</servlet-name>
         <servlet-class>servlets.ClaimFoodServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteSubscriptionServlet-NAME</servlet-name>
+        <servlet-class>servlets.DeleteSubscriptionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup-URL</url-pattern>
@@ -48,6 +52,10 @@
     <servlet-mapping>
         <servlet-name>ClaimFoodServlet-NAME</servlet-name>
         <url-pattern>/ClaimFoodServlet-URL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSubscriptionServlet-NAME</servlet-name>
+        <url-pattern>/DeleteSubscriptionServlet-URL</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
