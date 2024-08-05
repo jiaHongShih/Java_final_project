@@ -149,6 +149,7 @@
     <div class="subscription-form">
         <h2>Subscribe to Food Preferences</h2>
     <form action="SubscriptionServlet-URL" method="post">
+        <input type="hidden" name="sourcePage" value="Consumer.jsp">
         <div class="form-group">
             <label for="foodPreference">Select your food preference:</label>
             <select id="foodPreference" name="foodPreference" class="form-control">

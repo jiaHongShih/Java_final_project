@@ -119,6 +119,56 @@ public class BusinessLogic {
         return foodItems;
     }
 
+    public static List<FoodItemsDTO> listForPrefChar(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "JOIN Subscriptions s ON s.userID = ? "
+                + "WHERE f.price = 0  "
+                + "  AND f.isSurplus = true  "
+                + "  AND u.location = (SELECT location FROM Users WHERE id = ?) "
+                + "  AND f.quantity > 0"
+                + "  AND f.foodPreferences = s.foodPreferences; ";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            prepQuery.setInt(2, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+
     public static boolean claimItem(int quanity, int itemID) {
         boolean isUpdated = false;
         Connection connection = null;
@@ -159,6 +209,52 @@ public class BusinessLogic {
                 + "FROM FoodItems f "
                 + "JOIN Users u ON f.userID = u.id "
                 + "WHERE f.price > 0 AND f.isSurplus = true "
+                + "AND f.quantity > 0 "
+                + "AND u.location = (SELECT location FROM Users WHERE id = ?)";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+    
+    public static List<FoodItemsDTO> listForLocationChar(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "WHERE f.price = 0 AND f.isSurplus = true "
                 + "AND f.quantity > 0 "
                 + "AND u.location = (SELECT location FROM Users WHERE id = ?)";
         List<FoodItemsDTO> foodItems = new ArrayList<>();

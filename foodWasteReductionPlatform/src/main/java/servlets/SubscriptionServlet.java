@@ -34,7 +34,14 @@ public class SubscriptionServlet extends HttpServlet {
 
         BusinessLogic.addSubscription(userId, phoneNum, communicationMethod, foodPreference);
 
-        // Redirect to consumer page to show updated subscription
-        response.sendRedirect("Consumer.jsp");
+        String sourcePage = request.getParameter("sourcePage");
+
+        if ("consumer.jsp".equals(sourcePage)) {
+            response.sendRedirect("Consumer.jsp");
+        } else if ("cOrg.jsp".equals(sourcePage)) {
+            response.sendRedirect("cOrg.jsp");
+        } else {
+            response.sendRedirect("index.jsp"); // Fallback if sourcePage is not recognized
+        }
     }
 }

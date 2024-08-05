@@ -4,10 +4,11 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.time.LocalDate" %>
 <%-- 
-    Document   : foodItemDetail.jsp
-    Created on : Aug 4, 2024, 5:50:53 PM
-    Author     : JiaHong
+    Document   : foodItemDetailForChar
+    Created on : Aug 5, 2024, 6:49:59 PM
+    Author     : Nicholas Jacques
 --%>
+<!DOCTYPE html>
 <%
     int itemId = Integer.parseInt(request.getParameter("id"));
     FoodItemsDAO dao = new FoodItemsDAO();
@@ -27,7 +28,7 @@
     <h1>Purchase</h1>
 
     <form action="ClaimFoodServlet-URL" method="post">
-        <input type="hidden" name="sourcePage" value="Consumer.jsp">
+        <input type="hidden" name="sourcePage" value="cOrg.jsp">
         <input type="hidden" name="id" value="<%= item.getId() %>"/>
         <input type="hidden" id="isSurplus" name="isSurplus" value="<%= item.isSurplus()%>">
         <input type="hidden" class="form-control" id="foodPreferences" name="foodPreferences" value="<%= item.getFoodPreferences() %>">
