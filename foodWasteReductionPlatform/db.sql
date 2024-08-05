@@ -38,8 +38,6 @@ CREATE TABLE FoodItems (
     quantity INT NOT NULL,
     expirationDate DATE NOT NULL,
     price DECIMAL(10, 2),
-    startDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    endDate TIMESTAMP,
     foodPreferences VARCHAR(255),
     FOREIGN KEY (userID) REFERENCES Users(id)
 );

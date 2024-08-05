@@ -95,7 +95,7 @@ public class FoodItemsDAO {
             prepQuery.setInt(1, userID);
             rs = prepQuery.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 FoodItemsDTO foodItem = new FoodItemsDTO();
                 foodItem.setId(rs.getInt("id"));
                 foodItem.setUserID(rs.getInt("userID"));

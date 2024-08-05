@@ -1,3 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+    <%
+        Integer userId = (Integer) request.getSession().getAttribute("userId");
+        if (userId != null) {
+            int id = userId;
+        }else{
+            response.sendRedirect("index.jsp");
+        }
+    %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
