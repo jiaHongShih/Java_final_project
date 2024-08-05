@@ -29,20 +29,34 @@
     <title>Consumer Page</title>
     <link rel="stylesheet" href="pageStyle.css">
     <style>
-        /* Add styles for the notifications section */
         .notifications {
             display: none;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
-            padding: 10px;
-            position: absolute;
+            padding: 20px;
+            position: fixed;
             right: 10px;
-            top: 100px;
-            width: 300px;
+            width: 400px; /* Increase width */
+            height: 80vh; /* Increase height */
             z-index: 100;
+            overflow-y: auto;
         }
         .notifications.visible {
             display: block;
+        }
+        .subscription-form {
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-100%);
+            width: 80%;
+            max-width: 600px;
         }
     </style>
 </head>
@@ -90,7 +104,7 @@
         </div>
     </div>
 
-    <div class="notifications-sidebar">
+    <div class="shopping-cart-sidebar">
         <button id="NotificationsBtn">Notifications</button>
         <div class="notifications" id="NotificationsContent">
             <!-- Smaller version of the main content to be displayed here -->
