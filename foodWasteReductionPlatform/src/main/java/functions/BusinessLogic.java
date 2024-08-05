@@ -5,6 +5,7 @@
 package functions;
 
 import dataAccess.ClaimsPurchaseDAO;
+import dataAccess.DBConnection;
 import dataAccess.FoodItemsDAO;
 import dataAccess.SubscriptionsDAO;
 import dataAccess.UserDAO;
@@ -14,8 +15,14 @@ import dataObjects.FoodItemsDTO;
 import dataObjects.SubscriptionsDTO;
 import dataObjects.UserDTO;
 import dataObjects.UserQuestionsDTO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -23,6 +30,51 @@ import java.util.regex.Pattern;
  * @author JiaHong
  */
 public class BusinessLogic {
+
+    public static List<FoodItemsDTO> listForLocation(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "WHERE f.price > 0 AND f.isSurplus = true "
+                + "AND u.location = (SELECT location FROM Users WHERE id = ?)";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
 
     public static boolean addUser(String name, String email,
             String password, String userType, String location) {
@@ -256,7 +308,6 @@ public class BusinessLogic {
             String communicationMethod, String foodPreferences) {
         boolean isValid
                 = isValidUserID(userID)
-                && isValidPhoneNum(phoneNum)
                 && isValidCommunicationMethod(communicationMethod)
                 && isValidFoodPreferences(foodPreferences);
         if (!isValid) {

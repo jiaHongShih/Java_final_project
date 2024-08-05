@@ -48,7 +48,7 @@ CREATE TABLE Subscriptions (
     userID INT NOT NULL,
     phoneNum VARCHAR(255),
     communicationMethod VARCHAR(255) NOT NULL,
-    foodPreferences VARCHAR(255),
+    foodPreferences VARCHAR(255) NOT NULL,
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
 
