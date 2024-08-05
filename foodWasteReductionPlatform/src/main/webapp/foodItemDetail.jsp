@@ -53,7 +53,12 @@
             <label for="foodPreferences">Food Preferences</label>
             <input type="text" class="form-control" id="foodPreferences" name="foodPreferences" value="<%= item.getFoodPreferences() %>">
         </div>
-
+        
+        <div class="form-group">
+            <label for="isSurplus">List as Surplus?</label>
+            <input type="checkbox" id="isSurplus" name="isSurplus" value="<%= item.isSurplus()%>">
+        </div>
+        
         <button type="submit" class="btn btn-success">Save Changes</button>
     </form>
 </div>
