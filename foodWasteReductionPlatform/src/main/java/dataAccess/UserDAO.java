@@ -84,6 +84,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setUserType(rs.getString("userType"));
                 user.setLocation(rs.getString("location"));
+                user.setId(rs.getInt("id"));
             }
         } catch (SQLException e) {
             printSQLException(e);
