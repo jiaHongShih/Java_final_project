@@ -22,7 +22,7 @@ public class FoodItemsDAO {
     private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO FoodItems (userID, name, quantity, expirationDate, price, foodPreferences) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE userID = ? ORDER BY expirationDate";
+    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE userID = ? AND quantity > 0 ORDER BY expirationDate";
     private static final String SELECT_ONE_QUERY = "SELECT * FROM FoodItems WHERE id = ?";
     private static final String UPDATE_QUERY = "UPDATE FoodItems SET userID = ?, name = ?, quantity = ?, expirationDate = ?, price = ?, foodPreferences = ?, isSurplus =? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM FoodItems WHERE id = ?";
