@@ -17,11 +17,14 @@
         <servlet-name>UpdateFoodItemServlet-NAME</servlet-name>
         <servlet-class>servlets.UpdateFoodItemServlet</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>SubscriptionServlet-NAME</servlet-name>
         <servlet-class>servlets.SubscriptionServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>ClaimFoodServlet-NAME</servlet-name>
+        <servlet-class>servlets.ClaimFoodServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signup-URL</url-pattern>
@@ -42,8 +45,10 @@
         <servlet-name>SubscriptionServlet-NAME</servlet-name>
         <url-pattern>/SubscriptionServlet-URL</url-pattern>
     </servlet-mapping>
-    
-    
+    <servlet-mapping>
+        <servlet-name>ClaimFoodServlet-NAME</servlet-name>
+        <url-pattern>/ClaimFoodServlet-URL</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
