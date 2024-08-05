@@ -1,16 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dataObjects;
 
 import java.time.LocalDate;
-import java.sql.Timestamp;
 
-/**
- *
- * @author Josh Barrett
- */
 public class FoodItemsDTO {
     
     private int id;
@@ -20,20 +11,9 @@ public class FoodItemsDTO {
     private LocalDate expirationDate;
     private double price;
     private String foodPreferences;
+    private boolean isSurplus;
 
-    public FoodItemsDTO() {}
-
-    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate,
-            double price, String foodPreferences) {
-        this.userID = userID;
-        this.name = name;
-        this.quantity = quantity;
-        this.expirationDate = expirationDate;
-        this.price = price;
-        this.foodPreferences = foodPreferences;
-    }
-
-    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences) {
+    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences, boolean isSurplus) {
         this.id = id;
         this.userID = userID;
         this.name = name;
@@ -41,9 +21,27 @@ public class FoodItemsDTO {
         this.expirationDate = expirationDate;
         this.price = price;
         this.foodPreferences = foodPreferences;
+        this.isSurplus = isSurplus;
     }
-    
-    
+
+    public FoodItemsDTO() {}
+
+    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences) {
+        this.userID = userID;
+        this.name = name;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
+        this.price = price;
+        this.foodPreferences = foodPreferences;
+    }
+
+    public boolean isSurplus() {
+        return isSurplus;
+    }
+
+    public void setSurplus(boolean isSurplus) {
+        this.isSurplus = isSurplus;
+    }
 
     // Getters and Setters
     public void setId(int id) {
@@ -102,4 +100,3 @@ public class FoodItemsDTO {
         this.foodPreferences = foodPreferences;
     }
 }
-

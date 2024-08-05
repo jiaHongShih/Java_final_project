@@ -14,7 +14,7 @@
     <div class="main-content">
         <div class="item-details">
             <h2>Item Details</h2>
-         
+            <form action="UpdateItemServlet" method="post">
                 <div class="form-group">
                     <label for="itemName">Name:</label>
                     <input type="text" id="itemName" name="itemName" value="">
@@ -33,12 +33,15 @@
                 </div>
                 <div class="form-group">
                     <label for="postedBy">Posted By:</label>
-                    <input type="text" id="postedBy" name="postedBy" value="" >
+                    <input type="text" id="postedBy" name="postedBy" value="">
                 </div>
-                <a href="retailer.html"><button>Save Changes</button></a>
-            
+                <div class="form-group">
+                    <label for="isSurplus">Is Expired:</label>
+                    <input type="checkbox" id="isSurplus" name="isSurplus">
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
         </div>
     </div>
-   
 </body>
 </html>

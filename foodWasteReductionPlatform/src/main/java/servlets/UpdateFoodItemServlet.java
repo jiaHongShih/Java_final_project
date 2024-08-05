@@ -29,6 +29,8 @@ public class UpdateFoodItemServlet extends HttpServlet {
         LocalDate expirationDate = LocalDate.parse(request.getParameter("expirationDate"));
         double price = Double.parseDouble(request.getParameter("price"));
         String foodPreferences = request.getParameter("foodPreferences");
+        boolean isSurplus = request.getParameter("isSurplus") != null;
+
 
         FoodItemsDTO foodItem = new FoodItemsDTO();
         foodItem.setId(id);
@@ -38,6 +40,8 @@ public class UpdateFoodItemServlet extends HttpServlet {
         foodItem.setExpirationDate(expirationDate);
         foodItem.setPrice(price);
         foodItem.setFoodPreferences(foodPreferences);
+        foodItem.setSurplus(isSurplus);
+        
 
         FoodItemsDAO dao = new FoodItemsDAO();
         boolean isUpdated = dao.updateFoodItem(foodItem);

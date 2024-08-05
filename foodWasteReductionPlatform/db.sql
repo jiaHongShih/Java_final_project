@@ -39,6 +39,7 @@ CREATE TABLE FoodItems (
     expirationDate DATE NOT NULL,
     price DECIMAL(10, 2),
     foodPreferences VARCHAR(255),
+    isSurplus BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
 

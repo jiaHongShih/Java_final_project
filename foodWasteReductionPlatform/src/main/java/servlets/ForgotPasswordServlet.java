@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -62,6 +63,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         user.setPassword(newPassword);
         boolean isUpdated = userDAO.updateUser(user);
         if (isUpdated) {
+
             // Redirect to the index page on successful password update
             response.sendRedirect("index.jsp");
         } else {

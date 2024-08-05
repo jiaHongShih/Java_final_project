@@ -22,9 +22,9 @@ public class FoodItemsDAO {
     private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO FoodItems (userID, name, quantity, expirationDate, price, foodPreferences) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE userID = ?";
+    private static final String SELECT_QUERY = "SELECT * FROM FoodItems WHERE userID = ? ORDER BY expirationDate";
     private static final String SELECT_ONE_QUERY = "SELECT * FROM FoodItems WHERE id = ?";
-    private static final String UPDATE_QUERY = "UPDATE FoodItems SET userID = ?, name = ?, quantity = ?, expirationDate = ?, price = ?, foodPreferences = ? WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE FoodItems SET userID = ?, name = ?, quantity = ?, expirationDate = ?, price = ?, foodPreferences = ?, isSurplus =? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM FoodItems WHERE id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM FoodItems";
 
@@ -104,6 +104,7 @@ public class FoodItemsDAO {
                 foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
                 foodItem.setPrice(rs.getDouble("price"));
                 foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
                 foodItems.add(foodItem);
             }
         } catch (SQLException e) {
@@ -169,7 +170,8 @@ public class FoodItemsDAO {
             prepQuery.setDate(4, Date.valueOf(foodItem.getExpirationDate()));
             prepQuery.setDouble(5, foodItem.getPrice());
             prepQuery.setString(6, foodItem.getFoodPreferences());
-            prepQuery.setInt(7, foodItem.getId());
+            prepQuery.setBoolean(7, foodItem.isSurplus());
+            prepQuery.setInt(8, foodItem.getId());
 
             rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
