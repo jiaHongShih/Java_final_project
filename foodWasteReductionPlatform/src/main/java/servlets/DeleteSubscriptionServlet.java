@@ -30,12 +30,7 @@ public class DeleteSubscriptionServlet extends HttpServlet {
             try {
                 int id = Integer.parseInt(idStr);
                 deleteSubscription(id);
-                String sourcePage = request.getParameter("sourcePage");
-                if ("Consumer.jsp".equals(sourcePage)) {
-                    response.sendRedirect("Consumer.jsp");
-                } else if ("cOrg.jsp".equals(sourcePage)) {
-                    response.sendRedirect("cOrg.jsp");
-                }
+                response.sendRedirect("Consumer.jsp"); // Redirect to the subscriptions page after deletion
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID format.");

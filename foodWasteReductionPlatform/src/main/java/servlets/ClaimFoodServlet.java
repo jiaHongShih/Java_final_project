@@ -41,8 +41,8 @@ public class ClaimFoodServlet extends HttpServlet {
         if (isUpdated) {
             String sourcePage = request.getParameter("sourcePage");
 
-            if ("Consumer.jsp".equals(sourcePage)) {
-                response.sendRedirect("Consumer.jsp");
+            if ("consumer.jsp".equals(sourcePage)) {
+                response.sendRedirect("consumer.jsp");
             } else if ("cOrg.jsp".equals(sourcePage)) {
                 response.sendRedirect("cOrg.jsp");
             }
