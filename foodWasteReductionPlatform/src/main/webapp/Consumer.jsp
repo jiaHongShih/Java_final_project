@@ -173,18 +173,18 @@
         <div class="form-group">
             <label>Preferred communication method:</label><br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="communicationMethod" id="contactMethodPhone" value="phone" required>
+                <input class="form-check-input" type="radio" name="communicationMethod" id="contactMethodPhone" value="phone">
                 <label class="form-check-label" for="contactMethodPhone">Phone</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="communicationMethod" id="contactMethodEmail" value="email" required>
+                <input class="form-check-input" type="radio" name="communicationMethod" id="contactMethodEmail" value="email">
                 <label class="form-check-label" for="contactMethodEmail">Email</label>
             </div>
         </div>
 
         <div class="form-group">
             <label for="phoneNum">Phone Number:</label>
-            <input type="tel" id="phoneNum" name="phoneNum" class="form-control" required>
+            <input type="tel" id="phoneNum" name="phoneNum" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-primary">Subscribe</button>
