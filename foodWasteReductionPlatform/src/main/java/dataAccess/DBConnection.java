@@ -14,8 +14,8 @@ public class DBConnection {
     private Connection connection;
 
     private static final String SERVER_URL = "jdbc:mysql://localhost:3306/foodwaste";
-    private static final String USER = "root";
-    private static final String PASSWORD = "11111111";
+    private static final String USER = "Josh";
+    private static final String PASSWORD = "CodeFlash73";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     // Private constructor to prevent instantiation
@@ -58,6 +58,11 @@ public class DBConnection {
                 Logger.log("Failed to close database connection: " + e.getMessage());
             }
         }
+    }
+
+// Method to set a test connection
+    public void setTestConnection(Connection connection) {
+        this.connection = connection;
     }
 }
 
