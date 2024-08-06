@@ -44,7 +44,7 @@
             <button type="submit" class="rPass">Reset Password</button>
         </form>
         <div id="Back2Login">
-            <a href="index.html">Return to Login Page</a>
+            <a href="index.jsp">Return to Login Page</a>
         </div>
     </div>
 </body>

@@ -18,16 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Get user ID from session
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
         if (userId == null) {
             response.sendRedirect("index.jsp");
             return;
         }
 
-        // Get form parameters
         String foodPreference = request.getParameter("foodPreference");
         String phoneNum = request.getParameter("phoneNum");
         String communicationMethod = request.getParameter("communicationMethod");
@@ -36,12 +34,12 @@ public class SubscriptionServlet extends HttpServlet {
 
         String sourcePage = request.getParameter("sourcePage");
 
-        if ("consumer.jsp".equals(sourcePage)) {
+        if ("Consumer.jsp".equals(sourcePage)) {
             response.sendRedirect("Consumer.jsp");
         } else if ("cOrg.jsp".equals(sourcePage)) {
             response.sendRedirect("cOrg.jsp");
         } else {
-            response.sendRedirect("index.jsp"); // Fallback if sourcePage is not recognized
+            response.sendRedirect("index.jsp");
         }
     }
 }

@@ -12,11 +12,10 @@
     } else {
         response.sendRedirect("index.jsp");
     }
-    
+
     List<FoodItemsDTO> itemsList = BusinessLogic.listForLocation(userId);
     List<FoodItemsDTO> itemsListSus = BusinessLogic.listForPref(userId);
     List<SubscriptionsDTO> suBList = BusinessLogic.listForSub(userId);
-
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +43,7 @@
             height: 80vh; /* Increase height */
             z-index: 100;
             overflow-y: auto;
+            margin-top: 5%;
         }
         .notifications.visible {
             display: block;
@@ -54,13 +54,12 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 20px;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-100%);
+            right: 50%;
             width: 80%;
+            bottom: 10%;
+            position: fixed;
             max-width: 600px;
+            display: none;
         }
     </style>
 </head>
@@ -68,9 +67,10 @@
 <body>
 
     <header>
-        <img src="./Photos/LogoNoBG.png" alt="Logo" class="TopLogo">
+        <img src="./Photos/SmartWaste.png" alt="Logo" class="TopLogo">
         <h3 class="pTitle">Consumer</h3>
         <a href="index.jsp"><button id="LogOutBTN">LogOut</button></a>
+        <button id="SubDIV">Subscribe</button>
     </header>
 
     <div class="main-content">
@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="subscription-form">
+    <div id="subscription-form" class="subscription-form">
         <h2>Subscribe to Food Preferences</h2>
     <form action="SubscriptionServlet-URL" method="post">
         <input type="hidden" name="sourcePage" value="Consumer.jsp">
@@ -209,6 +209,15 @@
         document.getElementById('NotificationsBtn').addEventListener('click', function () {
             var notificationsContent = document.getElementById('NotificationsContent');
             notificationsContent.classList.toggle('visible');
+        });
+
+        document.getElementById('SubDIV').addEventListener('click', function () {
+            var subscriptionForm = document.getElementById('subscription-form');
+            if (subscriptionForm.style.display === 'none' || subscriptionForm.style.display === '') {
+                subscriptionForm.style.display = 'block';
+            } else {
+                subscriptionForm.style.display = 'none';
+            }
         });
     </script>
 
