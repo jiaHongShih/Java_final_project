@@ -59,5 +59,10 @@ public class DBConnection {
             }
         }
     }
+
+// Method to set a test connection
+    public void setTestConnection(Connection connection) {
+        this.connection = connection;
+    }
 }
 
