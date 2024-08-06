@@ -22,10 +22,10 @@ public class SubscriptionServlet extends HttpServlet {
             throws ServletException, IOException {
         // Get user ID from session
         Integer userId = (Integer) request.getSession().getAttribute("userId");
-        if (userId == null) {
-            response.sendRedirect("index.jsp");
-            return;
-        }
+//        if (userId == null) {
+//            response.sendRedirect("index.jsp");
+//            return;
+//        }
 
         // Get form parameters
         String foodPreference = request.getParameter("foodPreference");
@@ -36,7 +36,7 @@ public class SubscriptionServlet extends HttpServlet {
 
         String sourcePage = request.getParameter("sourcePage");
 
-        if ("consumer.jsp".equals(sourcePage)) {
+        if ("Consumer.jsp".equals(sourcePage)) {
             response.sendRedirect("Consumer.jsp");
         } else if ("cOrg.jsp".equals(sourcePage)) {
             response.sendRedirect("cOrg.jsp");
