@@ -58,7 +58,7 @@
 
 <body>
     <header>
-        <img src="./Photos/LogoNoBG.png" alt="Logo" class="TopLogo">
+        <img src="./Photos/SmartWaste.png" alt="Logo" class="TopLogo">
         <h3 class="pTitle">Retailer</h3>
         <a href="index.jsp"><button id="LogOutBTN">LogOut</button></a>
     </header>
