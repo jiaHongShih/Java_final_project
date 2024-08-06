@@ -1,0 +1,7 @@
+[2024-08-06 13:54:15] Database driver not found: com.mysql.cj.jdbc.Driver
+[2024-08-06 13:54:44] Database driver not found: com.mysql.cj.jdbc.Driver
+[2024-08-06 13:56:23] Database driver not found: com.mysql.cj.jdbc.Driver
+[2024-08-06 14:31:42] addedJohn, email=john.doe@example.com
+[2024-08-06 14:34:36] Failed to add user. Validation failed for: name=John, email=john.doe@example.com
+[2024-08-06 14:38:25] Failed to add user. Validation failed for: name=John, email=john.doe@example.com
+[2024-08-06 14:38:44] Failed to add user. Validation failed for: name=John, email=john.doe@example.com
