@@ -5,6 +5,7 @@
 package functions;
 
 import dataAccess.ClaimsPurchaseDAO;
+import dataAccess.DBConnection;
 import dataAccess.FoodItemsDAO;
 import dataAccess.SubscriptionsDAO;
 import dataAccess.UserDAO;
@@ -13,36 +14,311 @@ import dataObjects.Claims_PurchaseDTO;
 import dataObjects.FoodItemsDTO;
 import dataObjects.SubscriptionsDTO;
 import dataObjects.UserDTO;
-import dataObjects.UserDTO.UserType;
 import dataObjects.UserQuestionsDTO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
 /**
  *
  * @author JiaHong
  */
-
 public class BusinessLogic {
 
+    public static List<SubscriptionsDTO> listForSub(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_PREFERENCE_QUERY = "SELECT * FROM Subscriptions WHERE userID = ?";
+        List<SubscriptionsDTO> subList = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_PREFERENCE_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                SubscriptionsDTO subscription = new SubscriptionsDTO();
+                subscription.setId(rs.getInt("id"));
+                subscription.setUserID(rs.getInt("userID"));
+                subscription.setPhoneNum(rs.getString("phoneNum"));
+                subscription.setCommunicationMethod(rs.getString("communicationMethod"));
+                subscription.setFoodPreferences(rs.getString("foodPreferences"));
+                subList.add(subscription);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return subList;
+    }
+
+    public static List<FoodItemsDTO> listForPref(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "JOIN Subscriptions s ON s.userID = ? "
+                + "WHERE f.price > 0  "
+                + "  AND f.isSurplus = true  "
+                + "  AND u.location = (SELECT location FROM Users WHERE id = ?) "
+                + "  AND f.quantity > 0"
+                + "  AND f.foodPreferences = s.foodPreferences; ";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            prepQuery.setInt(2, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+
+    public static List<FoodItemsDTO> listForPrefChar(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "JOIN Subscriptions s ON s.userID = ? "
+                + "WHERE f.price = 0  "
+                + "  AND f.isSurplus = true  "
+                + "  AND u.location = (SELECT location FROM Users WHERE id = ?) "
+                + "  AND f.quantity > 0"
+                + "  AND f.foodPreferences = s.foodPreferences; ";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            prepQuery.setInt(2, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+
+    public static boolean claimItem(int quanity, int itemID) {
+        boolean isUpdated = false;
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        String QUERY_STRING = "UPDATE FoodItems"
+                + " SET quantity = quantity - ?"
+                + " WHERE id = ?;";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(QUERY_STRING);
+            prepQuery.setInt(1, quanity);
+            prepQuery.setInt(2, itemID);
+            int affectedRows = prepQuery.executeUpdate();
+            if (affectedRows > 0) {
+                isUpdated = true; // Update was successful
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return isUpdated;
+    }
+
+    public static List<FoodItemsDTO> listForLocation(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "WHERE f.price > 0 AND f.isSurplus = true "
+                + "AND f.quantity > 0 "
+                + "AND u.location = (SELECT location FROM Users WHERE id = ?)";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+    
+    public static List<FoodItemsDTO> listForLocationChar(int userID) {
+        Connection connection = null;
+        PreparedStatement prepQuery = null;
+        ResultSet rs = null;
+        String SELECT_ALL_QUERY = "SELECT f.* "
+                + "FROM FoodItems f "
+                + "JOIN Users u ON f.userID = u.id "
+                + "WHERE f.price = 0 AND f.isSurplus = true "
+                + "AND f.quantity > 0 "
+                + "AND u.location = (SELECT location FROM Users WHERE id = ?)";
+        List<FoodItemsDTO> foodItems = new ArrayList<>();
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            prepQuery.setInt(1, userID);
+            rs = prepQuery.executeQuery();
+
+            while (rs.next()) {
+                FoodItemsDTO foodItem = new FoodItemsDTO();
+                foodItem.setId(rs.getInt("id"));
+                foodItem.setUserID(rs.getInt("userID"));
+                foodItem.setName(rs.getString("name"));
+                foodItem.setQuantity(rs.getInt("quantity"));
+                foodItem.setExpirationDate(rs.getDate("expirationDate").toLocalDate());
+                foodItem.setPrice(rs.getDouble("price"));
+                foodItem.setFoodPreferences(rs.getString("foodPreferences"));
+                foodItem.setSurplus(rs.getBoolean("isSurplus"));
+                foodItems.add(foodItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (prepQuery != null) {
+                    prepQuery.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return foodItems;
+    }
+
     public static boolean addUser(String name, String email,
-            String password, UserDTO.UserType userType, String location) {
+            String password, String userType, String location) {
         if (validUser(name, email, password, userType, location)) {
             UserDTO user = new UserDTO(name, email, password, userType, location);
             UserDAO userDAO = new UserDAO();
-            userDAO.insertUser(user);
+            int results = userDAO.insertUser(user);
+            if (results == 0) {
+                Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
+
+            } else {
+                Logger.log("added" + name + ", email=" + email);
+
+            }
             return true;
         } else {
             Logger.log("Failed to add user. Validation failed for: name=" + name + ", email=" + email);
             return false;
         }
+
     }
 
     public static boolean addFoodItem(int userID, String name,
             int quantity, LocalDate expirationDate, double price, Timestamp startDate,
-            Timestamp endDate, String foodType) {
-        if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType)) {
-            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, startDate, endDate, foodType);
+            Timestamp endDate, String foodType, String foodPreferences) {
+        if (isValidFoodItem(userID, name, quantity, expirationDate, price, startDate, endDate, foodType, foodPreferences)) {
+            FoodItemsDTO foodItem = new FoodItemsDTO(userID, name, quantity, expirationDate, price, foodType);
             FoodItemsDAO foodItemsDAO = new FoodItemsDAO();
             foodItemsDAO.addFoodItem(foodItem);
             return true;
@@ -66,9 +342,9 @@ public class BusinessLogic {
     }
 
     public static boolean addUserQuestion(int questionID, String email,
-            int userID, String answer) {
-        if (isValidUserQuestion(questionID, email, userID, answer)) {
-            UserQuestionsDTO userQuestion = new UserQuestionsDTO(questionID, email, userID, answer);
+            String answer) {
+        if (isValidUserQuestion(questionID, email, answer)) {
+            UserQuestionsDTO userQuestion = new UserQuestionsDTO(questionID, email, answer);
             UserQuestionsDAO userQuestionsDAO = new UserQuestionsDAO();
             userQuestionsDAO.addUserQuestion(userQuestion);
             return true;
@@ -91,8 +367,8 @@ public class BusinessLogic {
     }
 
     private static boolean isValidClaimsPurchase(int foodItemID, int quantity, int userID, Timestamp claimedAt) {
-        boolean isValid = 
-                isValidFoodItemId(foodItemID)
+        boolean isValid
+                = isValidFoodItemId(foodItemID)
                 && isValidQuantity(quantity)
                 && isValidUserId(userID)
                 && isValidClaimedAt(claimedAt);
@@ -102,9 +378,9 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
-        boolean isValid =
-                isValidUserID(userID)
+    private static boolean isValidFoodItem(int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType, String foodPreferences) {
+        boolean isValid
+                = isValidUserID(userID)
                 && isValidName(name)
                 && isValidQuantity(quantity)
                 && isValidExpirationDate(expirationDate)
@@ -176,7 +452,7 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidUserType(UserType userType) {
+    private static boolean isValidUserType(String userType) {
         boolean isValid = userType != null;
         if (!isValid) {
             Logger.log("Invalid UserType: " + userType);
@@ -192,9 +468,9 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean validUser(String name, String email, String password, UserDTO.UserType userType, String location) {
-        boolean isValid = 
-                isValidName(name)
+    private static boolean validUser(String name, String email, String password, String userType, String location) {
+        boolean isValid
+                = isValidName(name)
                 && isValidEmail(email)
                 && isValidPassword(password)
                 && isValidUserType(userType)
@@ -247,9 +523,8 @@ public class BusinessLogic {
 
     private static boolean isValidSubscription(int userID, String phoneNum,
             String communicationMethod, String foodPreferences) {
-        boolean isValid =
-                isValidUserID(userID)
-                && isValidPhoneNum(phoneNum)
+        boolean isValid
+                = isValidUserID(userID)
                 && isValidCommunicationMethod(communicationMethod)
                 && isValidFoodPreferences(foodPreferences);
         if (!isValid) {
@@ -292,12 +567,10 @@ public class BusinessLogic {
         return isValid;
     }
 
-    private static boolean isValidUserQuestion(int questionID, String email,
-            int userID, String answer) {
-        boolean isValid = 
-                 isValidQuestionID(questionID)
+    private static boolean isValidUserQuestion(int questionID, String email, String answer) {
+        boolean isValid
+                = isValidQuestionID(questionID)
                 && isValidEmail(email)
-                && isValidUserID(userID)
                 && isValidAnswer(answer);
         if (!isValid) {
             Logger.log("User Question Validation Failed: questionID=" + questionID + ", email=" + email);

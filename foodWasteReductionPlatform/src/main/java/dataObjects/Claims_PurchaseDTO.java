@@ -11,7 +11,8 @@ import java.sql.Timestamp;
  * @author Josh Barrett
  */
 public class Claims_PurchaseDTO {
-
+    
+    private int id;
     private int foodItemID;
     private int quantity;
     private int userID;
@@ -28,8 +29,23 @@ public class Claims_PurchaseDTO {
         this.claimedAt = claimedAt;
     }
 
+    public Claims_PurchaseDTO(int id, int foodItemID, int quantity, int userID, Timestamp claimedAt) {
+        this.id = id;
+        this.foodItemID = foodItemID;
+        this.quantity = quantity;
+        this.userID = userID;
+        this.claimedAt = claimedAt;
+    }
 
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+    
     public int getFoodItemID() {
         return foodItemID;
     }

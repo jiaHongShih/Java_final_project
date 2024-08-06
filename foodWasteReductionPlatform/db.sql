@@ -1,11 +1,11 @@
 -- Step 1: Drop the database if it already exists (Optional)
-DROP DATABASE IF EXISTS YourDatabaseName;
+DROP DATABASE IF EXISTS FoodWaste;
 
 -- Step 2: Create the database
-CREATE DATABASE YourDatabaseName;
+CREATE DATABASE FoodWaste;
 
 -- Step 3: Use the database
-USE YourDatabaseName;
+USE FoodWaste;
 
 -- Step 4: Create the tables
 CREATE TABLE Users (
@@ -13,7 +13,7 @@ CREATE TABLE Users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    userType ENUM('retailer', 'consumer', 'charitable_organization') NOT NULL,
+    userType VARCHAR(255) NOT NULL,
     location VARCHAR(255)
 );
 
@@ -25,9 +25,9 @@ CREATE TABLE Questions (
 CREATE TABLE UserQuestions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     questionID INT NOT NULL,
-    userID INT NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     answer VARCHAR(255) NOT NULL,
-    FOREIGN KEY (userID) REFERENCES Users(id),
+    FOREIGN KEY (email) REFERENCES Users(email),
     FOREIGN KEY (questionID) REFERENCES Questions(id)
 );
 
@@ -38,8 +38,8 @@ CREATE TABLE FoodItems (
     quantity INT NOT NULL,
     expirationDate DATE NOT NULL,
     price DECIMAL(10, 2),
-    startDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    endDate TIMESTAMP,
+    foodPreferences VARCHAR(255),
+    isSurplus BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
 
@@ -47,8 +47,8 @@ CREATE TABLE Subscriptions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     userID INT NOT NULL,
     phoneNum VARCHAR(255),
-    communicationMethod ENUM('email', 'phone') NOT NULL,
-    foodPreferences VARCHAR(255),
+    communicationMethod VARCHAR(255) NOT NULL,
+    foodPreferences VARCHAR(255) NOT NULL,
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
 
@@ -61,3 +61,7 @@ CREATE TABLE Claims_Perchase (
     FOREIGN KEY (foodItemID) REFERENCES FoodItems(id),
     FOREIGN KEY (userID) REFERENCES Users(id)
 );
+
+INSERT INTO Questions (questionDescription) VALUES ('What Is The Name Of Your First Cousin?');
+INSERT INTO Questions (questionDescription) VALUES ('What Was The Color Of Your First Car?');
+INSERT INTO Questions (questionDescription) VALUES ('What City Were You Born In');
