@@ -5,6 +5,7 @@
 package dataAccess;
 
 import dataObjects.QuestionsDTO;
+import functions.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class QuestionsDAO {
 
-    private static final String URL = "jdbc:your_database_url";
-    private static final String USER = "your_database_user";
-    private static final String PASSWORD = "your_database_password";
+    private static Connection connection = null;
+    private static PreparedStatement prepQuery = null;
+    private static ResultSet rs = null;
 
     private static final String INSERT_QUERY = "INSERT INTO questions (questionDescription) VALUES (?)";
     private static final String SELECT_QUERY = "SELECT * FROM questions WHERE id = ?";
@@ -26,73 +27,108 @@ public class QuestionsDAO {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM questions";
 
     public void addQuestion(QuestionsDTO question) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY)) {
-            preparedStatement.setString(1, question.getQuestionDescription());
-            preparedStatement.executeUpdate();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(INSERT_QUERY);
+            prepQuery.setString(1, question.getQuestionDescription());
+            prepQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
     }
 
     public QuestionsDTO getQuestion(int id) {
         QuestionsDTO question = null;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY)) {
-            preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_QUERY);
+            prepQuery.setInt(1, id);
+            rs = prepQuery.executeQuery();
 
             if (rs.next()) {
                 question = new QuestionsDTO();
-                question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return question;
     }
 
     public List<QuestionsDTO> getAllQuestions() {
         List<QuestionsDTO> questions = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY)) {
-            ResultSet rs = preparedStatement.executeQuery();
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(SELECT_ALL_QUERY);
+            rs = prepQuery.executeQuery();
 
             while (rs.next()) {
                 QuestionsDTO question = new QuestionsDTO();
-                question.setId(rs.getInt("id"));
                 question.setQuestionDescription(rs.getString("questionDescription"));
                 questions.add(question);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return questions;
     }
 
     public boolean updateQuestion(QuestionsDTO question) {
         boolean rowUpdated = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-            preparedStatement.setString(1, question.getQuestionDescription());
-            preparedStatement.setInt(2, question.getId());
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(UPDATE_QUERY);
+            prepQuery.setString(1, question.getQuestionDescription());
+            prepQuery.setInt(2, question.getId());
 
-            rowUpdated = preparedStatement.executeUpdate() > 0;
+            rowUpdated = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowUpdated;
     }
 
     public boolean deleteQuestion(int id) {
         boolean rowDeleted = false;
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
-            preparedStatement.setInt(1, id);
-            rowDeleted = preparedStatement.executeUpdate() > 0;
+        try {
+            connection = (Connection) DBConnection.getInstance().getConnection();
+            prepQuery = connection.prepareStatement(DELETE_QUERY);
+            prepQuery.setInt(1, id);
+            rowDeleted = prepQuery.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                prepQuery.close();
+            } catch (SQLException ex) {
+                Logger.log("fail to close");
+            }
         }
         return rowDeleted;
     }

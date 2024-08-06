@@ -1,48 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dataObjects;
 
 import java.time.LocalDate;
-import java.sql.Timestamp;
 
-/**
- *
- * @author Josh Barrett
- */
 public class FoodItemsDTO {
-
+    
     private int id;
     private int userID;
     private String name;
     private int quantity;
-    private LocalDate ExpirationDate;
+    private LocalDate expirationDate;
     private double price;
-    private Timestamp startDate;
-    private Timestamp endDate;
-    private String foodType;
+    private String foodPreferences;
+    private boolean isSurplus;
 
-    public FoodItemsDTO(){}
-    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, Timestamp startDate, Timestamp endDate, String foodType) {
+    public FoodItemsDTO(int id, int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences, boolean isSurplus) {
         this.id = id;
         this.userID = userID;
         this.name = name;
         this.quantity = quantity;
+        this.expirationDate = expirationDate;
         this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.foodType = foodType;
+        this.foodPreferences = foodPreferences;
+        this.isSurplus = isSurplus;
+    }
+
+    public FoodItemsDTO() {}
+
+    public FoodItemsDTO(int userID, String name, int quantity, LocalDate expirationDate, double price, String foodPreferences) {
+        this.userID = userID;
+        this.name = name;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
+        this.price = price;
+        this.foodPreferences = foodPreferences;
+    }
+
+    public boolean isSurplus() {
+        return isSurplus;
+    }
+
+    public void setSurplus(boolean isSurplus) {
+        this.isSurplus = isSurplus;
+    }
+
+    // Getters and Setters
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    
     public int getUserID() {
         return userID;
     }
@@ -68,11 +77,11 @@ public class FoodItemsDTO {
     }
 
     public LocalDate getExpirationDate() {
-        return ExpirationDate;
+        return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate ExpirationDate) {
-        this.ExpirationDate = ExpirationDate;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public double getPrice() {
@@ -83,27 +92,11 @@ public class FoodItemsDTO {
         this.price = price;
     }
 
-    public Timestamp getStartDate() {
-        return startDate;
+    public String getFoodPreferences() {
+        return foodPreferences;
     }
 
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public Timestamp getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getFoodType() {
-        return foodType;
-    }
-
-    public void setFoodType(String foodType) {
-        this.foodType = foodType;
+    public void setFoodPreferences(String foodPreferences) {
+        this.foodPreferences = foodPreferences;
     }
 }

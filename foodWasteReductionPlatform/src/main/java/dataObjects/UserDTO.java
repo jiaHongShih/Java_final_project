@@ -13,22 +13,28 @@ public class UserDTO {
     private String name;
     private String email;
     private String password;
-    private UserType userType;
+    private String userType;
     private String location;
 
     public UserDTO(){}
-    public UserDTO(int id, String name, String email,
-            String password, UserDTO.UserType userType, String location) {
+    public UserDTO(String name, String email,
+            String password, String userType, String location) {
             this.email = email;
-            this.id = id;
             this.location = location;
             this.name = name;
             this.password = password;
             this.userType = userType;
     }
-    public void setId(int id) {
+
+    public UserDTO(int id, String name, String email, String password, String userType, String location) {
         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.location = location;
     }
+    
 
     public void setName(String name) {
         this.name = name;
@@ -42,12 +48,16 @@ public class UserDTO {
         this.password = password;
     }
 
-    public void setUserType(UserType userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -66,7 +76,7 @@ public class UserDTO {
         return password;
     }
 
-    public UserType getUserType() {
+    public String getUserType() {
         return userType;
     }
 
@@ -74,9 +84,4 @@ public class UserDTO {
         return location;
     }
     
-    public enum UserType {
-    RETAILER,
-    CONSUMER,
-    CHARITABLE_ORGANIZATION
-    }
 }
