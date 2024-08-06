@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.http.HttpSession;
 
 
 /**
@@ -36,38 +35,29 @@ public class ForgotPasswordServlet extends HttpServlet {
 
         // Validate input
         if (email == null || newPassword == null || confirmPassword == null || securityAnswer == null ||
-                !newPassword.equals(confirmPassword)) {
-            // Redirect or set an error message for invalid inputs
+            !newPassword.equals(confirmPassword)) {
             response.sendRedirect("Fpass.jsp?error=Invalid input");
             return;
         }
 
-        // Fetch the user by email
         UserDTO user = userDAO.selectUserByEmail(email);
         if (user == null) {
-            // Redirect or set an error message if user is not found
             response.sendRedirect("Fpass.jsp?error=User not found");
             return;
         }
 
-        // Fetch the security question for the user
         UserQuestionsDTO userQuestion = userQuestionsDAO.getUserQuestionByEmail(email);
         if (userQuestion == null || userQuestion.getQuestionID() != securityQuestionID ||
-                !userQuestion.getAnswer().equals(securityAnswer)) {
-            // Redirect or set an error message if security question/answer is incorrect
+            !userQuestion.getAnswer().equals(securityAnswer)) {
             response.sendRedirect("Fpass.jsp?error=Invalid security question or answer");
             return;
         }
 
-        // Update the user's password
         user.setPassword(newPassword);
         boolean isUpdated = userDAO.updateUser(user);
         if (isUpdated) {
-
-            // Redirect to the index page on successful password update
             response.sendRedirect("index.jsp");
         } else {
-            // Redirect or set an error message if password update fails
             response.sendRedirect("Fpass.jsp?error=Failed to update password");
         }
     }

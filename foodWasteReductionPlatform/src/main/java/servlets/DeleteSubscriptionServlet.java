@@ -6,7 +6,6 @@ package servlets;
 
 import dataAccess.DBConnection;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +23,7 @@ public class DeleteSubscriptionServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idStr = request.getParameter("id");
         if (idStr != null) {

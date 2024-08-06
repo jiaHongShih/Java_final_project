@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
         } else {
-            response.sendRedirect("loginError.jsp");
+            response.sendRedirect("index.jsp");
         }
     }
 }

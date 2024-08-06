@@ -26,23 +26,18 @@ public class ClaimFoodServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        int userId = (Integer) session.getAttribute("userId");
+
         int id = Integer.parseInt(request.getParameter("id"));
-//        String name = request.getParameter("name");
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-//        LocalDate expirationDate = LocalDate.parse(request.getParameter("expirationDate"));
-//        double price = Double.parseDouble(request.getParameter("price"));
-//        String foodPreferences = request.getParameter("foodPreferences");
-//        boolean isSurplus = request.getParameter("isSurplus") != null;
 
         boolean isUpdated = BusinessLogic.claimItem(quantity, id);
         if (isUpdated) {
             String sourcePage = request.getParameter("sourcePage");
 
-            if ("consumer.jsp".equals(sourcePage)) {
-                response.sendRedirect("consumer.jsp");
+            if ("Consumer.jsp".equals(sourcePage)) {
+                response.sendRedirect("Consumer.jsp");
             } else if ("cOrg.jsp".equals(sourcePage)) {
                 response.sendRedirect("cOrg.jsp");
             }

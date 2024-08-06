@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
  */
 public class UpdateFoodItemServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userId = (Integer) session.getAttribute("userId");
@@ -31,7 +32,6 @@ public class UpdateFoodItemServlet extends HttpServlet {
         String foodPreferences = request.getParameter("foodPreferences");
         boolean isSurplus = request.getParameter("isSurplus") != null;
 
-
         FoodItemsDTO foodItem = new FoodItemsDTO();
         foodItem.setId(id);
         foodItem.setUserID(userId);
@@ -42,7 +42,6 @@ public class UpdateFoodItemServlet extends HttpServlet {
         foodItem.setFoodPreferences(foodPreferences);
         foodItem.setSurplus(isSurplus);
         
-
         FoodItemsDAO dao = new FoodItemsDAO();
         boolean isUpdated = dao.updateFoodItem(foodItem);
 
